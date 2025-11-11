@@ -99,10 +99,16 @@ const updateProfile = asyncHandler(async (req, res) => {
         });
     }
 
-    const updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, {
+    const updates = {
+        name: req.body.name || user.name,
+        email: req.body.email || user.email,
+        profile: req.body.profile || user.profile
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, updates, {
         new: true,
         runValidators: true
-    });
+    }).select("-password");
 
     res.status(200).json({
         message: "User profile updated successfully",

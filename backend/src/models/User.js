@@ -27,18 +27,23 @@ const userSchema = new mongoose.Schema({
         bio: {
             type: String,
         },
-        skills: {
-            type: [ String ]
-        },
-        experience: {
-            type: String,
-        },
-        hourlyRate: {
-            type: Number,
-        },
         profilePic: {
             type: String
         }
+    },
+    clientProfile: {
+        companyName: String,
+        companyWebsite: String,
+        industry: String,
+        description: String,
+        hiringBudget: Number,
+    },
+    freelancerProfile: {
+        skills: [String],
+        hourlyRate: Number,
+        experience: String,
+        portfolioLinks: [String],
+        availability: String,
     },
     isActive: {
         type: Boolean,
