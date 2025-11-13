@@ -17,7 +17,7 @@ const getFreelancerById = asyncHandler(async (req, res) => {
 });
 
 const updateFreelancerProfile = asyncHandler(async (req, res) => {
-    const freelancer = await User.findById(req.user.id);
+    const freelancer = await User.findById(req.user.id).select("-password");
 
     if(!freelancer) {
         return res.status(403).json({

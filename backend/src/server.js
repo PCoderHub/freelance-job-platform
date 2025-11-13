@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000;
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
 const freelancerRoutes = require("./routes/freelancerRoutes");
+const clientRoutes = require("./routes/clientRoutes");
 
 DBConnect();
 
@@ -15,6 +16,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", userRoutes);
 app.use("/api/freelancer", freelancerRoutes);
+app.use("/api/client", clientRoutes);
 
 app.use(errorHandler);
 
