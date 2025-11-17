@@ -40,7 +40,12 @@ const jobSchema = new mongoose.Schema(
       enum: ["open", "in-progress", "completed", "cancelled"],
       default: "open",
     },
-    //proposals: [],
+    proposals: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Proposal",
+      },
+    ],
     milestones: [
       {
         title: String,

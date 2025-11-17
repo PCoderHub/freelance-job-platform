@@ -1,5 +1,6 @@
 const Job = require("../models/Job");
 const asyncHandler = require("../middleware/asyncHandler");
+const Proposal = require("../models/Proposal");
 
 const createJob = asyncHandler(async (req, res) => {
   const { title, description, skillsRequired, budget, duration, category } =
@@ -96,10 +97,132 @@ const deleteJob = asyncHandler(async (req, res) => {
   });
 });
 
+const applyToJob = asyncHandler(async (req, res) => {
+  const { coverLetter, bidAmount } = req.body;
+  const job = await Job.findById(req.params.id);
+
+  if (!job) {
+    return res.status(404).json({
+      message: "Job not found",
+    });
+  }
+
+  if (job.status !== "open") {
+    return res.status(400).json({
+      message: "Job is not open for applications",
+    });
+  }
+
+  const existingApplication = await Proposal.findOne({
+    job: req.params.id,
+    freelancer: req.user.id,
+  });
+
+  if (existingApplication) {
+    return res.status(400).json({
+      message: "You have already applied to this job",
+    });
+  }
+
+  const application = await Proposal.create({
+    job: req.params.id,
+    freelancer: req.user.id,
+    coverLetter,
+    bidAmount,
+  });
+
+  job.proposals.push(application._id);
+  await job.save();
+
+  res.status(201).json({
+    message: "Application submitted successfully",
+    application,
+  });
+});
+
+const getJobProposals = asyncHandler(async (req, res) => {
+  const job = await Job.findById(req.params.id).populate("proposals");
+
+  if (!job) {
+    return res.status(404).json({
+      message: "Job not found",
+    });
+  }
+
+  if (job.client.toString() !== req.user.id) {
+    return res.status(403).json({
+      message: "Access denied",
+    });
+  }
+
+  const proposals = await Proposal.find({ job: req.params.id }).populate(
+    "freelancer",
+    "name profile freelancerProfile"
+  );
+
+  res.status(200).json(proposals);
+});
+
+const assignFreelancer = asyncHandler(async (req, res) => {
+  const { proposalId } = req.body;
+
+  if (!proposalId) {
+    return res.status(400).json({
+      message: "Proposal ID is required",
+    });
+  }
+
+  const job = await Job.findById(req.params.id);
+  if (!job) {
+    return res.status(404).json({
+      message: "Job not found",
+    });
+  }
+
+  if (job.client.toString() !== req.user.id) {
+    return res.status(403).json({
+      message: "Access denied",
+    });
+  }
+
+  const proposal = await Proposal.findById(proposalId);
+  if (!proposal) {
+    return res.status(404).json({
+      message: "Proposal not found",
+    });
+  }
+
+  if (proposal.job.toString() !== req.params.id) {
+    return res.status(400).json({
+      message: "Proposal does not belong to this job",
+    });
+  }
+
+  job.freelancer = proposal.freelancer;
+  job.status = "in-progress";
+  await job.save();
+
+  proposal.status = "accepted";
+  await proposal.save();
+
+  await Proposal.updateMany(
+    { job: req.params.id, _id: { $ne: proposalId } },
+    { $set: { status: "rejected" } }
+  );
+
+  res.status(200).json({
+    message: "Freelancer assigned successfully",
+    job,
+  });
+});
+
 module.exports = {
   createJob,
   getAllJobs,
   getJobById,
   updateJob,
   deleteJob,
+  applyToJob,
+  getJobProposals,
+  assignFreelancer,
 };
