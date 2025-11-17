@@ -1,4 +1,5 @@
 const asyncHandler = require("../middleware/asyncHandler");
+const Job = require("../models/Job");
 const User = require("../models/User");
 
 const getAllClients = asyncHandler(async (req, res) => {
@@ -47,9 +48,37 @@ const updateClientProfile = asyncHandler(async (req, res) => {
   });
 });
 
-const getClientJobs = asyncHandler(async (req, res) => {});
+const getClientJobs = asyncHandler(async (req, res) => {
+  const clientId = req.user.id;
 
-const getClientHires = asyncHandler(async (req, res) => {});
+  const jobs = await Job.find({ client: clientId }).populate(
+    "freelancer",
+    "name email profile freelancerProfile.skills"
+  );
+
+  res.status(200).json(jobs);
+});
+
+const getClientHires = asyncHandler(async (req, res) => {
+  const clientId = req.user.id;
+
+  const jobs = await Job.find({
+    client: clientId,
+    status: { $in: ["in-progress", "completed"] },
+  }).populate("freelancer", "name email profile freelancerProfile.skills");
+
+  const freelancers = {};
+
+  // To generate unique list of freelancers
+  jobs.forEach((job) => {
+    if (job.freelancer) {
+      freelancers[job.freelancer._id.toString()] = job.freelancer;
+    }
+  });
+
+  const freelancerResponse = Object.values(freelancers);
+  res.status(200).json(freelancerResponse);
+});
 
 module.exports = {
   getAllClients,
