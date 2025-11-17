@@ -16,7 +16,6 @@ router.get(
   validateRole("admin", "client"),
   getAllFreelancers
 ); //get all freelnacers for client/admin
-router.get("/:id", getFreelancerById); //get freelancer by id
 router.put(
   "/update-profile",
   authMiddleware,
@@ -35,5 +34,6 @@ router.get(
   validateRole("freelancer"),
   getFreelancerProposals
 ); //get proposals submitted by freelancer
+router.get("/:id", getFreelancerById); //get freelancer by id
 
 module.exports = router;

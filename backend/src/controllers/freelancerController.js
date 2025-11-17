@@ -1,5 +1,7 @@
 const asyncHandler = require("../middleware/asyncHandler");
 const User = require("../models/User");
+const Job = require("../models/Job");
+const Proposal = require("../models/Proposal");
 
 const getAllFreelancers = asyncHandler(async (req, res) => {
   const freelancers = await User.find({ role: "freelancer" }).select(
@@ -48,9 +50,41 @@ const updateFreelancerProfile = asyncHandler(async (req, res) => {
   });
 });
 
-const getFreelancerJobs = asyncHandler(async (req, res) => {});
+const getFreelancerJobs = asyncHandler(async (req, res) => {
+  const freelancerId = req.user.id;
 
-const getFreelancerProposals = asyncHandler(async (req, res) => {});
+  const hiredJobs = await Job.find({ freelancer: freelancerId }).populate(
+    "client",
+    "name email clientProfile"
+  );
+
+  const proposals = await Proposal.find({ freelancer: freelancerId }).select(
+    "job"
+  );
+
+  const jobIds = proposals.map((proposal) => proposal.job);
+
+  const appliedJobs = await Job.find({
+    _id: { $in: jobIds },
+    freelancer: { $ne: freelancerId },
+  }).populate("client", "name email clientProfile");
+
+  const freelancerJobs = [...hiredJobs, ...appliedJobs];
+
+  res.status(200).json(freelancerJobs);
+});
+
+const getFreelancerProposals = asyncHandler(async (req, res) => {
+  const freelancerId = req.user.id;
+
+  const proposals = await Proposal.find({ freelancer: freelancerId }).populate({
+    path: "job",
+    select: "title budget status client",
+    populate: { path: "client", select: "name email clientProfile" },
+  });
+
+  res.status(200).json(proposals);
+});
 
 module.exports = {
   getAllFreelancers,
