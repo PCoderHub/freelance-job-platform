@@ -9,6 +9,7 @@ const userRoutes = require("./routes/userRoutes");
 const freelancerRoutes = require("./routes/freelancerRoutes");
 const clientRoutes = require("./routes/clientRoutes");
 const jobRoutes = require("./routes/jobRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 
 DBConnect();
 
@@ -19,6 +20,7 @@ app.use("/api/auth", userRoutes);
 app.use("/api/freelancer", freelancerRoutes);
 app.use("/api/client", clientRoutes);
 app.use("/api/job", jobRoutes);
+app.use("/api/review", reviewRoutes);
 
 app.use(errorHandler);
 
