@@ -5,6 +5,7 @@ const errorHandler = require("./middleware/errorHandler");
 const app = express();
 const port = process.env.PORT || 3000;
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const freelancerRoutes = require("./routes/freelancerRoutes");
 const clientRoutes = require("./routes/clientRoutes");
@@ -15,6 +16,12 @@ DBConnect();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 app.use("/api/auth", userRoutes);
 app.use("/api/freelancer", freelancerRoutes);

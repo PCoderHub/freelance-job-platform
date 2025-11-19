@@ -1,12 +1,46 @@
-import React from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { registerUser } from "../services/userServices";
+import { toast } from "react-toastify";
 
 function Register() {
   const [searchParams] = useSearchParams();
   const role = searchParams.get("role");
-  console.log(role);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSignUp = () => {};
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (!name.trim() || !email.trim() || !password.trim()) {
+        alert("Please fill all the fields");
+        return;
+      }
+
+      const userData = {
+        name,
+        email,
+        password,
+        role,
+      };
+
+      const response = await registerUser(userData);
+      toast.success(response.data.message);
+
+      setName("");
+      setEmail("");
+      setPassword("");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
 
   return (
     <div className="w-3/5 mx-auto flex rounded-sm my-20 bg-white">
@@ -29,6 +63,9 @@ function Register() {
             id="name"
             placeholder="Name"
             className="border border-black rounded-full py-2 px-5"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
           />
           <input
             type="email"
@@ -36,6 +73,9 @@ function Register() {
             id="email"
             placeholder="Email"
             className="border border-black rounded-full py-2 px-5"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <input
             type="password"
@@ -43,6 +83,9 @@ function Register() {
             id="password"
             placeholder="Password"
             className="border border-black rounded-full py-2 px-5"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <button
             type="submit"
