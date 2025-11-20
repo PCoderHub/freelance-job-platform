@@ -7,6 +7,8 @@ import Landing from "./pages/Landing.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
 import { ToastContainer } from "react-toastify";
+import { store } from "./redux/store.js";
+import { Provider } from "react-redux";
 
 const router = createBrowserRouter([
   {
@@ -31,18 +33,20 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
-    <ToastContainer
-      position="top-center"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick={false}
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-    />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </Provider>
   </StrictMode>
 );

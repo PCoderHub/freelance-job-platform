@@ -16,7 +16,7 @@ function Register() {
 
     try {
       if (!name.trim() || !email.trim() || !password.trim()) {
-        alert("Please fill all the fields");
+        toast.error("Please fill all the fields");
         return;
       }
 
@@ -96,7 +96,7 @@ function Register() {
         </form>
         <p className="my-2">
           Already have an account?{" "}
-          <Link to={`/login`} className="text-indigo-500">
+          <Link to={`/login`} className="text-indigo-500 underline">
             Login
           </Link>
         </p>
