@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { loginUser } from "../services/userServices";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -30,8 +31,18 @@ function Login() {
 
       setEmail("");
       setPassword("");
+
+      if (response.data.user.role === "admin") {
+        setTimeout(() => {
+          navigate("/admin");
+        }, 2000);
+      } else {
+        setTimeout(() => {
+          navigate(`/home/${response.data.user.role}`);
+        }, 2000);
+      }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.message || error.response.data.message);
     }
   };
 

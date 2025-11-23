@@ -9,6 +9,9 @@ import Login from "./pages/Login.jsx";
 import { ToastContainer } from "react-toastify";
 import { store } from "./redux/store.js";
 import { Provider } from "react-redux";
+import Home from "./pages/Home.jsx";
+import MyJobPosts from "./pages/MyJobPosts.jsx";
+import ClientDashboard from "./pages/ClientDashboard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +19,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/",
+        index: true,
         element: <Landing />,
       },
       {
@@ -26,6 +29,20 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/home/:role",
+        element: <Home />,
+        children: [
+          {
+            index: true,
+            element: <ClientDashboard />,
+          },
+          {
+            path: "my-job-posts",
+            element: <MyJobPosts />,
+          },
+        ],
       },
     ],
   },
