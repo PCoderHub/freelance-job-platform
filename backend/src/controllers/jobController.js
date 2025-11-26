@@ -23,6 +23,13 @@ const createJob = asyncHandler(async (req, res) => {
 });
 
 const getAllJobs = asyncHandler(async (req, res) => {
+  if (req.user.role === "client") {
+    const jobs = await Job.find({ client: req.user.id }).populate(
+      "freelancer",
+      "name email profile freelancerProfile.skills"
+    );
+    return res.status(200).json(jobs);
+  }
   const jobs = await Job.find().populate("client", "name email clientProfile");
   res.status(200).json(jobs);
 });
