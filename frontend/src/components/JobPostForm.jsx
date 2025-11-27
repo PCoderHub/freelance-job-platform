@@ -24,7 +24,9 @@ function JobPostForm({ onClose }) {
     try {
       const response = await createJob({
         ...formData,
-        skillsRequired: formData.skillsRequired.split(","),
+        skillsRequired: formData.skillsRequired
+          .split(",")
+          .map((skill) => skill.trim()),
       });
       toast.success(response.data.message);
 

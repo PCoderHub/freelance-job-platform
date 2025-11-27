@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
+import { getJobById } from "../services/jobServices";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setJob } from "../features/job/jobSlice";
+import Modal from "./Modal";
+import JobDetails from "./JobDetails";
 
 function JobPost({ job }) {
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  const viewJobDetails = async (id) => {
+    try {
+      const res = await getJobById(id);
+      dispatch(setJob(res.data));
+      setOpen(true);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
   return (
     <div className="border rounded-lg p-5 my-10 shadow-sm bg-white hover:shadow-md transition">
       {/* Title */}
@@ -9,8 +27,8 @@ function JobPost({ job }) {
       {/* Category */}
       <p className="text-sm text-gray-500">{job.category}</p>
 
-      {/* Description */}
-      <p className="mt-2 text-gray-700 line-clamp-2">{job.description}</p>
+      {/* Description
+      <p className="mt-2 text-gray-700 line-clamp-2">{job.description}</p> */}
 
       {/* Skills */}
       <div className="mt-3 flex flex-wrap gap-2">
@@ -18,7 +36,7 @@ function JobPost({ job }) {
           job.skillsRequired.map((skill, index) => (
             <span
               key={index}
-              className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-md"
+              className="px-2 py-1 text-xs bg-indigo-200 text-indigo-700 rounded-md"
             >
               {skill.trim()}
             </span>
@@ -39,10 +57,16 @@ function JobPost({ job }) {
 
       {/* Buttons */}
       <div className="mt-4 flex gap-3">
-        <button className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">
+        <button
+          onClick={() => viewJobDetails(job._id)}
+          className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+        >
           View
         </button>
-        <button className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
+        <Modal open={open} onClose={() => setOpen(false)}>
+          <JobDetails />
+        </Modal>
+        <button className="px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700">
           Edit
         </button>
         <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">

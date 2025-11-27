@@ -40,7 +40,7 @@ function MyJobPosts() {
         <h2 className="mt-20 font-bold text-2xl text-center text-indigo-700">
           My Job posts
         </h2>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-4 gap-3 mr-2">
           {clientJobs.length > 0 &&
             clientJobs.map((job) => <JobPost key={job._id} job={job} />)}
         </div>

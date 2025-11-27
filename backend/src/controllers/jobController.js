@@ -36,7 +36,7 @@ const getAllJobs = asyncHandler(async (req, res) => {
 
 const getJobById = asyncHandler(async (req, res) => {
   const job = await Job.findById(req.params.id)
-    .populate("client", "clientProfile")
+    .populate("client", "name email clientProfile")
     .populate("freelancer", "freelancerProfile");
 
   if (!job) {

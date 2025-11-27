@@ -29,13 +29,7 @@ function ClientSidebar() {
           Dashboard
         </NavLink>
         <NavLink to="/home/client/my-job-posts" className={linkClasses}>
-          My Job Posts
-        </NavLink>
-        <NavLink to="/home/client/proposals" className={linkClasses}>
-          Proposals
-        </NavLink>
-        <NavLink to="/home/client/job-progress" className={linkClasses}>
-          Job progress
+          My Jobs
         </NavLink>
         <NavLink to="/home/client/payments" className={linkClasses}>
           Payments
