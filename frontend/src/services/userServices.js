@@ -6,7 +6,7 @@ export const loginUser = (user) => api.post("/auth/login", user);
 
 export const logoutUser = () => {
   localStorage.removeItem("user");
-  return api.get("/auth/logout");
+  return api.post("/auth/logout");
 };
 
 export const getMyProfile = () => api.get("/auth/my-profile");

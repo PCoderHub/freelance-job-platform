@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { getMyProfile, updateMyProfile } from "../services/userServices";
 import { updateClientProfile } from "../services/clientServices";
 import Modal from "../components/Modal";
-import EditProfileForm from "../components/EditClientProfileForm";
 import { uploadProfilePic } from "../services/uploadServices";
+import EditProfileForm from "../components/EditProfileForm";
+import { updateFreelancerProfile } from "../services/freelancerServices";
 
 function Profile() {
   const [user, setUser] = useState({});
   const [open, setOpen] = useState(false);
+  const userRole = JSON.parse(localStorage.getItem("user")).role;
 
   const [previewImage, setPreviewImage] = useState(null);
 
@@ -22,6 +24,11 @@ function Profile() {
     industry: "",
     description: "",
     hiringBudget: 0,
+    skills: [],
+    hourlyRate: 0,
+    experience: "",
+    portfolioLinks: [],
+    availability: "",
   });
 
   // LOAD USER INFO
@@ -30,24 +37,41 @@ function Profile() {
       try {
         const res = await getMyProfile();
         setUser(res.data);
-        setFormData({
+
+        const data = {
           name: res.data.name || "",
           email: res.data.email || "",
           title: res.data.profile?.title || "",
           bio: res.data.profile?.bio || "",
           profilePic: res.data.profile?.profilePic || "",
-          companyName: res.data.clientProfile?.companyName || "",
-          companyWebsite: res.data.clientProfile?.companyWebsite || "",
-          industry: res.data.clientProfile?.industry || "",
-          description: res.data.clientProfile?.description || "",
-          hiringBudget: res.data.clientProfile?.hiringBudget || 0,
-        });
+        };
+
+        if (userRole === "client") {
+          Object.assign(data, {
+            companyName: res.data.clientProfile?.companyName || "",
+            companyWebsite: res.data.clientProfile?.companyWebsite || "",
+            industry: res.data.clientProfile?.industry || "",
+            description: res.data.clientProfile?.description || "",
+            hiringBudget: res.data.clientProfile?.hiringBudget || 0,
+          });
+        }
+
+        if (userRole === "freelancer") {
+          Object.assign(data, {
+            skills: res.data.freelancerProfile?.skills || [],
+            hourlyRate: res.data.freelancerProfile?.hourlyRate || 0,
+            experience: res.data.freelancerProfile?.experience || "",
+            portfolioLinks: res.data.freelancerProfile?.portfolioLinks || [],
+            availability: res.data.freelancerProfile?.availability || "",
+          });
+        }
+        setFormData(data);
       } catch (error) {
         console.log(error);
       }
     };
     getProfile();
-  }, []);
+  }, [userRole]);
 
   // Handle form change
   const handleChange = (e) => {
@@ -99,14 +123,26 @@ function Profile() {
         description: formData.description,
         hiringBudget: formData.hiringBudget,
       };
-      // Save profile data
-      const res = await updateMyProfile(updatedProfile);
-      const res2 = await updateClientProfile(updatedClientProfile);
 
-      console.log(res.data);
-      console.log(res2.data);
+      const updatedFreelancerProfile = {
+        skills: formData.skills,
+        hourlyRate: formData.hourlyRate,
+        experience: formData.experience,
+        portfolioLinks: formData.portfolioLinks,
+        availability: formData.availability,
+      };
+
+      if (userRole === "client") {
+        const res = await updateMyProfile(updatedProfile);
+        const res2 = await updateClientProfile(updatedClientProfile);
+        setUser({ ...res.data.updatedUser, ...res2.data.client });
+      } else if (userRole === "freelancer") {
+        const res = await updateMyProfile(updatedProfile);
+        const res2 = await updateFreelancerProfile(updatedFreelancerProfile);
+        console.log(res2.data);
+        setUser({ ...res.data.updatedUser, ...res2.data.freelancer });
+      }
       // Update state
-      setUser({ ...res.data.updatedUser, ...res2.data.client });
       setOpen(false);
       setPreviewImage(null);
     } catch (err) {
@@ -164,37 +200,77 @@ function Profile() {
           </div>
 
           {/* RIGHT - BUSINESS INFO */}
-          <div className="bg-white border rounded-xl shadow p-6 m-1">
-            <h2 className="text-xl font-semibold mb-4">Business Information</h2>
-            <div className="space-y-3 text-gray-700">
-              <p>
-                <span className="font-medium">Company:</span>{" "}
-                {user.clientProfile?.companyName}
-              </p>
-              <p>
-                <span className="font-medium">Website:</span>{" "}
-                {user.clientProfile?.companyWebsite}
-              </p>
-              <p>
-                <span className="font-medium">Industry:</span>{" "}
-                {user.clientProfile?.industry}
-              </p>
-              <p className="text-sm">
-                <span className="font-medium">Description:</span>{" "}
-                {user.clientProfile?.description}
-              </p>
-              <p>
-                <span className="font-medium">Budget:</span>{" "}
-                {user.clientProfile?.hiringBudget}
-              </p>
+          {userRole === "client" && (
+            <div className="bg-white border rounded-xl shadow p-6 m-1">
+              <h2 className="text-xl font-semibold mb-4">
+                Business Information
+              </h2>
+              <div className="space-y-3 text-gray-700">
+                <p>
+                  <span className="font-medium">Company:</span>{" "}
+                  {user.clientProfile?.companyName}
+                </p>
+                <p>
+                  <span className="font-medium">Website:</span>{" "}
+                  {user.clientProfile?.companyWebsite}
+                </p>
+                <p>
+                  <span className="font-medium">Industry:</span>{" "}
+                  {user.clientProfile?.industry}
+                </p>
+                <p className="text-sm">
+                  <span className="font-medium">Description:</span>{" "}
+                  {user.clientProfile?.description}
+                </p>
+                <p>
+                  <span className="font-medium">Budget:</span>{" "}
+                  {user.clientProfile?.hiringBudget}
+                </p>
+              </div>
             </div>
-          </div>
+          )}
+          {userRole === "freelancer" && (
+            <div className="bg-white border rounded-xl shadow p-6 m-1 w-full">
+              <h2 className="text-xl font-semibold mb-4">
+                Freelancer Information
+              </h2>
+              <div className="space-y-3 text-gray-700">
+                <p>
+                  <span className="font-medium">Skills:</span>{" "}
+                  {user.freelancerProfile?.skills?.length
+                    ? user.freelancerProfile.skills.join(", ")
+                    : "—"}
+                </p>
+                <p>
+                  <span className="font-medium">Hourly Rate:</span>{" "}
+                  {user.freelancerProfile?.hourlyRate
+                    ? `₹${user.freelancerProfile.hourlyRate}/hr`
+                    : "—"}
+                </p>
+                <p>
+                  <span className="font-medium">Experience:</span>{" "}
+                  {user.freelancerProfile?.experience || "—"}
+                </p>
+                <p>
+                  <span className="font-medium">Portfolio Links:</span>{" "}
+                  {user.freelancerProfile?.portfolioLinks?.length
+                    ? user.freelancerProfile.portfolioLinks.join(", ")
+                    : "—"}
+                </p>
+                <p>
+                  <span className="font-medium">Availability:</span>{" "}
+                  {user.freelancerProfile?.availability || "—"}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* EDIT MODAL */}
       <Modal open={open} onClose={() => setOpen(false)}>
         <EditProfileForm
+          userRole={userRole}
           formData={formData}
           setFormData={setFormData}
           previewImage={previewImage}
