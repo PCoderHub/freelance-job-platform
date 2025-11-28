@@ -11,6 +11,7 @@ const freelancerRoutes = require("./routes/freelancerRoutes");
 const clientRoutes = require("./routes/clientRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const imageRoutes = require("./routes/imageRoutes");
 
 DBConnect();
 
@@ -28,6 +29,7 @@ app.use("/api/freelancer", freelancerRoutes);
 app.use("/api/client", clientRoutes);
 app.use("/api/job", jobRoutes);
 app.use("/api/review", reviewRoutes);
+app.use("/api/upload", imageRoutes);
 
 app.use(errorHandler);
 

@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import Home from "./pages/Home.jsx";
 import MyJobPosts from "./pages/MyJobPosts.jsx";
 import ClientDashboard from "./pages/ClientDashboard.jsx";
+import Profile from "./pages/Profile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
           {
             path: "my-job-posts",
             element: <MyJobPosts />,
+          },
+          {
+            path: "profile",
+            element: <Profile />,
           },
         ],
       },

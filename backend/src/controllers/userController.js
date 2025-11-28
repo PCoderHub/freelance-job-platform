@@ -111,7 +111,12 @@ const updateProfile = asyncHandler(async (req, res) => {
   const updates = {
     name: req.body.name || user.name,
     email: req.body.email || user.email,
-    profile: req.body.profile || user.profile,
+    profile: {
+      title: req.body.profile?.title || user.profile?.title || "",
+      bio: req.body.profile?.bio || user.profile?.bio || "",
+      profilePic:
+        req.body.profile?.profilePic || user.profile?.profilePic || "",
+    },
   };
 
   const updatedUser = await User.findByIdAndUpdate(req.user.id, updates, {
