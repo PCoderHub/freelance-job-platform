@@ -11,10 +11,10 @@ import { store } from "./redux/store.js";
 import { Provider } from "react-redux";
 import Home from "./pages/Home.jsx";
 import MyJobPosts from "./pages/MyJobPosts.jsx";
-import ClientDashboard from "./pages/ClientDashboard.jsx";
 import Profile from "./pages/Profile.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AllJobs from "./pages/AllJobs.jsx";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
           },
           {
             path: "browse-jobs",
-            element: <></>,
+            element: <AllJobs />,
           },
           {
             path: "my-jobs",

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 function JobDetails() {
   const job = useSelector((state) => state.job.job);
+  const user = JSON.parse(localStorage.getItem("user"));
   console.log(job);
 
   return (
@@ -57,6 +58,74 @@ function JobDetails() {
               {job.description}
             </p>
           </div>
+
+          {/* Client Details */}
+          {user.role === "freelancer" && (
+            <div className="mt-6 border-t pt-4">
+              <p className="text-gray-500 text-sm font-semibold mb-3">
+                Client Details
+              </p>
+
+              <div className="flex items-start gap-4">
+                {/* Avatar */}
+                <img
+                  src={job.client?.profile?.profilePic}
+                  alt={job.client?.name}
+                  className="w-14 h-14 rounded-full object-cover"
+                />
+
+                {/* Client Info */}
+
+                <div className="flex-1 space-y-1">
+                  {/* Name */}
+                  <p className="text-gray-800 font-medium text-lg">
+                    {job.client?.name}
+                  </p>
+
+                  {/* Title */}
+                  {job.client?.profile?.title && (
+                    <p className="text-gray-600 text-sm">
+                      {job.client.profile.title}
+                    </p>
+                  )}
+
+                  {/* Company Name */}
+                  {job.client?.clientProfile?.companyName && (
+                    <p className="text-gray-600 text-sm">
+                      {job.client.clientProfile.companyName}
+                    </p>
+                  )}
+
+                  {/* Company Website */}
+                  {job.client?.clientProfile?.companyWebsite && (
+                    <a
+                      href={job.client.clientProfile.companyWebsite}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-indigo-600 text-sm hover:underline"
+                    >
+                      {job.client.clientProfile.companyWebsite}
+                    </a>
+                  )}
+
+                  {/* Description */}
+                  {job.client?.clientProfile?.description && (
+                    <p className="text-gray-600 text-sm">
+                      {job.client.clientProfile.description}
+                    </p>
+                  )}
+
+                  {/* Hiring Budget */}
+                  {job.client?.clientProfile?.hiringBudget && (
+                    <p className="text-gray-600 text-sm">
+                      <span className="font-medium">Hiring Budget: </span>
+                      {job.client.clientProfile.hiringBudget}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
