@@ -13,6 +13,7 @@ import Home from "./pages/Home.jsx";
 import MyJobPosts from "./pages/MyJobPosts.jsx";
 import ClientDashboard from "./pages/ClientDashboard.jsx";
 import Profile from "./pages/Profile.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,15 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <ClientDashboard />,
+            element: <Dashboard />,
+          },
+          {
+            path: "browse-jobs",
+            element: <></>,
+          },
+          {
+            path: "my-jobs",
+            element: <></>,
           },
           {
             path: "my-job-posts",

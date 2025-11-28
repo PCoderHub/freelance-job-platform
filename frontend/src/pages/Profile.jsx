@@ -116,33 +116,22 @@ function Profile() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 mt-6">
-      <h1 className="text-3xl font-bold text-indigo-700 mb-8 text-center">
-        My Profile
-      </h1>
+      <div className="flex justify-between items-center my-6">
+        <h1 className="text-3xl font-bold text-indigo-700 text-center mx-auto">
+          My Profile
+        </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* LEFT - QUICK INFO */}
-        <div className="bg-white border rounded-xl shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">Quick Info</h2>
-          <div className="space-y-3 text-gray-700">
-            <p>
-              <span className="font-medium">Name:</span> {user.name}
-            </p>
-            <p>
-              <span className="font-medium">Email:</span> {user.email}
-            </p>
-            <p>
-              <span className="font-medium">Title:</span>{" "}
-              {user.profile?.title || "—"}
-            </p>
-            <p className="text-sm text-gray-600">
-              {user.profile?.bio || "No bio yet."}
-            </p>
-          </div>
-        </div>
+        <button
+          onClick={() => setOpen(true)}
+          className="px-5 py-2 bg-indigo-600 text-white rounded-lg"
+        >
+          Edit Profile
+        </button>
+      </div>
 
+      <div className="flex flex-col justify-center items-center">
         {/* CENTER - PROFILE PIC */}
-        <div className="bg-white border rounded-xl shadow p-6 flex flex-col items-center">
+        <div>
           <img
             src={
               previewImage ||
@@ -151,38 +140,54 @@ function Profile() {
             }
             className="w-40 h-40 rounded-full object-cover border-4 border-indigo-300"
           />
-          <button
-            onClick={() => setOpen(true)}
-            className="mt-6 px-5 py-2 bg-indigo-600 text-white rounded-lg"
-          >
-            Edit Profile
-          </button>
         </div>
 
-        {/* RIGHT - BUSINESS INFO */}
-        <div className="bg-white border rounded-xl shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">Business Information</h2>
-          <div className="space-y-3 text-gray-700">
-            <p>
-              <span className="font-medium">Company:</span>{" "}
-              {user.clientProfile?.companyName}
-            </p>
-            <p>
-              <span className="font-medium">Website:</span>{" "}
-              {user.clientProfile?.companyWebsite}
-            </p>
-            <p>
-              <span className="font-medium">Industry:</span>{" "}
-              {user.clientProfile?.industry}
-            </p>
-            <p className="text-sm">
-              <span className="font-medium">Description:</span>{" "}
-              {user.clientProfile?.description}
-            </p>
-            <p>
-              <span className="font-medium">Budget:</span>{" "}
-              {user.clientProfile?.hiringBudget}
-            </p>
+        <div className="flex mt-5">
+          {/* LEFT - QUICK INFO */}
+          <div className="bg-white border rounded-xl shadow p-6 m-1">
+            <h2 className="text-xl font-semibold mb-4">Quick Info</h2>
+            <div className="space-y-3 text-gray-700">
+              <p>
+                <span className="font-medium">Name:</span> {user.name}
+              </p>
+              <p>
+                <span className="font-medium">Email:</span> {user.email}
+              </p>
+              <p>
+                <span className="font-medium">Title:</span>{" "}
+                {user.profile?.title || "—"}
+              </p>
+              <p className="text-sm text-gray-600">
+                {user.profile?.bio || "No bio yet."}
+              </p>
+            </div>
+          </div>
+
+          {/* RIGHT - BUSINESS INFO */}
+          <div className="bg-white border rounded-xl shadow p-6 m-1">
+            <h2 className="text-xl font-semibold mb-4">Business Information</h2>
+            <div className="space-y-3 text-gray-700">
+              <p>
+                <span className="font-medium">Company:</span>{" "}
+                {user.clientProfile?.companyName}
+              </p>
+              <p>
+                <span className="font-medium">Website:</span>{" "}
+                {user.clientProfile?.companyWebsite}
+              </p>
+              <p>
+                <span className="font-medium">Industry:</span>{" "}
+                {user.clientProfile?.industry}
+              </p>
+              <p className="text-sm">
+                <span className="font-medium">Description:</span>{" "}
+                {user.clientProfile?.description}
+              </p>
+              <p>
+                <span className="font-medium">Budget:</span>{" "}
+                {user.clientProfile?.hiringBudget}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -197,6 +202,7 @@ function Profile() {
           handleChange={handleChange}
           handleImageChange={handleImageChange}
           handleSave={handleSave}
+          onClose={() => setOpen(false)}
         />
       </Modal>
     </div>

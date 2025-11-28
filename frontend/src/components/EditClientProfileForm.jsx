@@ -7,11 +7,31 @@ function EditProfileForm({
   handleChange,
   handleImageChange,
   handleSave,
+  onClose,
 }) {
+  const handleCancel = () => {
+    setPreviewImage(null);
+    onClose();
+  };
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4 text-indigo-700">Edit Profile</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <div className="my-1">
+          <label className="font-medium">Profile Picture</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="block mt-1"
+          />
+          {previewImage && (
+            <img
+              src={previewImage}
+              className="w-24 h-24 rounded-full mt-2 border"
+            />
+          )}
+        </div>
         {/* LEFT - Personal Info */}
         <div className="space-y-4">
           <div>
@@ -54,21 +74,6 @@ function EditProfileForm({
               className="w-full p-2 border rounded-lg"
             />
           </div>
-          <div>
-            <label className="font-medium">Profile Picture</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="block mt-1"
-            />
-            {previewImage && (
-              <img
-                src={previewImage}
-                className="w-24 h-24 rounded-full mt-2 border"
-              />
-            )}
-          </div>
         </div>
 
         {/* RIGHT - Business Info */}
@@ -107,7 +112,7 @@ function EditProfileForm({
             <label className="font-medium">Description</label>
             <textarea
               name="description"
-              rows="3"
+              rows="10"
               value={formData.description}
               onChange={handleChange}
               className="w-full p-2 border rounded-lg"
@@ -128,10 +133,7 @@ function EditProfileForm({
 
       {/* ACTION BUTTONS */}
       <div className="flex justify-end gap-3 mt-6">
-        <button
-          onClick={() => setPreviewImage(null)}
-          className="px-4 py-2 border rounded-lg"
-        >
+        <button onClick={handleCancel} className="px-4 py-2 border rounded-lg">
           Cancel
         </button>
         <button

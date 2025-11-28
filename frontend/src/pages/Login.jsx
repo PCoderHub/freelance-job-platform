@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { loginUser } from "../services/userServices";
-import { useDispatch } from "react-redux";
-import { loggedinUser } from "../features/user/userSlice";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -27,7 +24,7 @@ function Login() {
 
       const response = await loginUser(userData);
       toast.success(response.data.message);
-      dispatch(loggedinUser(response.data.user));
+      localStorage.setItem("user", JSON.stringify(response.data.user));
 
       setEmail("");
       setPassword("");
