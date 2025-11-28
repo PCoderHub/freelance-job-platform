@@ -14,6 +14,7 @@ import MyJobPosts from "./pages/MyJobPosts.jsx";
 import ClientDashboard from "./pages/ClientDashboard.jsx";
 import Profile from "./pages/Profile.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +39,11 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Dashboard />,
+            element: (
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            ),
           },
           {
             path: "browse-jobs",
@@ -50,11 +55,19 @@ const router = createBrowserRouter([
           },
           {
             path: "my-job-posts",
-            element: <MyJobPosts />,
+            element: (
+              <ProtectedRoute>
+                <MyJobPosts />
+              </ProtectedRoute>
+            ),
           },
           {
             path: "profile",
-            element: <Profile />,
+            element: (
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            ),
           },
         ],
       },
