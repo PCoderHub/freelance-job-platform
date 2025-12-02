@@ -14,10 +14,11 @@ import Chip from "@mui/material/Chip";
 import { useDispatch } from "react-redux";
 import { setJob } from "../features/job/jobSlice";
 import Modal from "./Modal";
-import JobDetails from "./JobDetails";
+import JobDetails from "../pages/JobDetails";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ProposalForm from "./ProposalForm";
+import JobView from "./JobView";
 
 const ITEM_HEIGHT = 48;
 
@@ -127,7 +128,7 @@ function JobCard({ job }) {
       </CardActions>
 
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
-        <JobDetails />
+        <JobView job={job} />
       </Modal>
       <Modal
         open={openProposalModal}

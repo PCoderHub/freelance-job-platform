@@ -15,7 +15,7 @@ import Profile from "./pages/Profile.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import AllJobs from "./pages/AllJobs.jsx";
-import JobDetails from "./components/JobDetails.jsx";
+import JobDetails from "./pages/JobDetails.jsx";
 
 const router = createBrowserRouter([
   {

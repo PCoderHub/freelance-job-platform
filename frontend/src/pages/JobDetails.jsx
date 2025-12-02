@@ -21,6 +21,8 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
+import Modal from "../components/Modal";
+import ProposalView from "../components/ProposalView";
 
 function JobDetails() {
   //const jobData = useSelector((state) => state.job.job);
@@ -28,6 +30,7 @@ function JobDetails() {
   const [job, setJob] = useState({});
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   //const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
@@ -47,6 +50,10 @@ function JobDetails() {
 
     getJobDetails(id);
   }, [id]);
+
+  const viewProposal = () => {
+    setOpen(true);
+  };
 
   if (loading) {
     return (
@@ -274,6 +281,25 @@ function JobDetails() {
                     </>
                   }
                 />
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                    onClick={viewProposal}
+                  >
+                    View Proposal
+                  </Button>
+                  <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                    Accept
+                  </Button>
+                  <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                    Decline
+                  </Button>
+                </Box>
+                <Modal open={open} onClose={() => setOpen(false)}>
+                  <ProposalView proposal={proposal} />
+                </Modal>
               </ListItem>
             ))}
           </List>
