@@ -4,6 +4,7 @@ import JobPost from "../components/JobPost";
 import Modal from "../components/Modal";
 import JobPostForm from "../components/JobPostForm";
 import { getClientJobs } from "../services/jobServices";
+import Masonry from "@mui/lab/Masonry";
 
 function MyJobPosts() {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,7 @@ function MyJobPosts() {
   }, []);
 
   return (
-    <div className="relative p-5 mx-auto my-5 w-4/5">
+    <div className="relative p-5 mx-auto my-3 w-4/5">
       <div className="absolute right-5">
         <button
           onClick={() => setOpen(true)}
@@ -36,14 +37,14 @@ function MyJobPosts() {
       <Modal open={open} onClose={() => setOpen(false)}>
         <JobPostForm onClose={() => setOpen(false)} />
       </Modal>
-      <div className="h-[75vh] overflow-y-auto ">
-        <h2 className="mt-20 font-bold text-2xl text-center text-indigo-700">
+      <div className="">
+        <h2 className="my-15 font-bold text-2xl text-center text-indigo-700">
           My Job posts
         </h2>
-        <div className="grid grid-cols-4 gap-3 mr-2">
+        <Masonry columns={2} spacing={2}>
           {clientJobs.length > 0 &&
             clientJobs.map((job) => <JobPost key={job._id} job={job} />)}
-        </div>
+        </Masonry>
       </div>
     </div>
   );

@@ -2,21 +2,21 @@ import React from "react";
 
 function ClientDashboard() {
   return (
-    <div className="p-5 mx-auto my-10 w-4/5">
+    <div className="p-5 mx-auto my-10 w-[80vw]">
       <div className="grid grid-cols-2 gap-8">
-        <div className="bg-white py-8 rounded-md shadow-md flex justify-around font-semibold">
+        <div className="bg-white py-8 px-8 rounded-md shadow-md flex justify-around font-semibold">
           <p>Active jobs:</p>
           <p>3</p>
         </div>
-        <div className="bg-white py-8 rounded-md shadow-md flex justify-around font-semibold">
+        <div className="bg-white py-8 px-8 rounded-md shadow-md flex justify-around font-semibold">
           <p>Proposal Waiting:</p>
           <p>3</p>
         </div>
-        <div className="bg-white py-8 rounded-md shadow-md flex justify-around font-semibold">
+        <div className="bg-white py-8 px-8 rounded-md shadow-md flex justify-around font-semibold">
           <p>Hires:</p>
           <p>3</p>
         </div>
-        <div className="bg-white py-8 rounded-md shadow-md flex justify-around font-semibold">
+        <div className="bg-white py-8 px-8 rounded-md shadow-md flex justify-around font-semibold">
           <p>Payments this month:</p>
           <p>Rs.350</p>
         </div>

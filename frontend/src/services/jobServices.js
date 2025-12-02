@@ -10,3 +10,5 @@ export const getAllJobs = () => api.get("/job/");
 
 export const applyToJob = (id, application) =>
   api.post(`/job/${id}/apply`, application);
+
+export const getJobProposals = (id) => api.get(`/job/${id}/proposals`);

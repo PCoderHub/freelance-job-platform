@@ -5,6 +5,7 @@ import Modal from "../components/Modal";
 import { uploadProfilePic } from "../services/uploadServices";
 import EditProfileForm from "../components/EditProfileForm";
 import { updateFreelancerProfile } from "../services/freelancerServices";
+import { toast } from "react-toastify";
 
 function Profile() {
   const [user, setUser] = useState({});
@@ -100,7 +101,7 @@ function Profile() {
         const uploadRes = await uploadProfilePic(uploadData);
         profilePicUrl = uploadRes.data.url; // get Cloudinary URL
       } catch (err) {
-        console.log("Image upload failed:", err);
+        toast.error("Image upload failed:", err);
         return;
       }
     }
@@ -146,7 +147,7 @@ function Profile() {
       setOpen(false);
       setPreviewImage(null);
     } catch (err) {
-      console.log("Profile update failed:", err);
+      toast.error("Profile update failed:", err.response.data.message);
     }
   };
 

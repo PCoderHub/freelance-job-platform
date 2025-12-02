@@ -1,21 +1,29 @@
-import React from "react";
-import { IoMdClose } from "react-icons/io";
+import Dialog from "@mui/material/Dialog";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function Modal({ open, onClose, children }) {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
-        <button
-          onClick={onClose}
-          className="ml-auto block mb-4 text-red-600 font-bold"
-        >
-          <IoMdClose />
-        </button>
-        {children}
-      </div>
-    </div>
+    <Dialog
+      fullScreen={fullScreen}
+      open={open}
+      fullWidth
+      onClose={onClose}
+      aria-labelledby="responsive-dialog-title"
+    >
+      <button
+        className="flex justify-end mx-2 mt-5 text-red-500 hover:text-red-600 hover:cursor-pointer"
+        onClick={onClose}
+        type="button"
+      >
+        x
+      </button>
+      {children}
+    </Dialog>
   );
 }
 

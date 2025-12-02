@@ -16,7 +16,7 @@ function EditProfileForm({
     onClose();
   };
   return (
-    <div>
+    <div className="w-full p-5">
       <h2 className="text-2xl font-bold mb-4 text-indigo-700">Edit Profile</h2>
       <div>
         <div className="my-1">
