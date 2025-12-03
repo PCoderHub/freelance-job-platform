@@ -23,17 +23,28 @@ const createJob = asyncHandler(async (req, res) => {
 });
 
 const getAllJobs = asyncHandler(async (req, res) => {
-  if (req.user && req.user.role === "client") {
-    const jobs = await Job.find({ client: req.user.id }).populate(
-      "freelancer",
-      "name email profile freelancerProfile.skills"
-    );
-    return res.status(200).json(jobs);
-  }
   const jobs = await Job.find().populate(
     "client",
     "name email profile clientProfile"
   );
+  res.status(200).json(jobs);
+});
+
+const getClientJobs = asyncHandler(async (req, res) => {
+  const jobs = await Job.find({ client: req.user.id }).populate(
+    "freelancer",
+    "name email profile freelancerProfile.skills"
+  );
+
+  res.status(200).json(jobs);
+});
+
+const getFreelancerJobs = asyncHandler(async (req, res) => {
+  const jobs = await Job.find({ status: "open" }).populate(
+    "client",
+    "name email profile clientProfile"
+  );
+
   res.status(200).json(jobs);
 });
 
@@ -229,6 +240,8 @@ const assignFreelancer = asyncHandler(async (req, res) => {
 module.exports = {
   createJob,
   getAllJobs,
+  getClientJobs,
+  getFreelancerJobs,
   getJobById,
   updateJob,
   deleteJob,

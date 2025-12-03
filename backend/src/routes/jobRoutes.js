@@ -8,6 +8,8 @@ const {
   applyToJob,
   getJobProposals,
   assignFreelancer,
+  getClientJobs,
+  getFreelancerJobs,
 } = require("../controllers/jobController");
 const authMiddleware = require("../middleware/authMiddleware");
 const validateRole = require("../middleware/validateRole");
@@ -15,7 +17,13 @@ const router = express.Router();
 
 router.post("/", authMiddleware, validateRole("client"), createJob); //create job, client only
 router.get("/", getAllJobs); //get all jobs
-router.get("/client", authMiddleware, validateRole("client"), getAllJobs); //get all jobs for client
+router.get("/client", authMiddleware, validateRole("client"), getClientJobs); //get all jobs for client
+router.get(
+  "/freelancer",
+  authMiddleware,
+  validateRole("freelancer"),
+  getFreelancerJobs
+); //get all jobs for freelancer
 router.get("/:id", authMiddleware, getJobById); //get job by id
 router.put("/:id", authMiddleware, validateRole("client"), updateJob); //update job by id, client only
 router.delete(

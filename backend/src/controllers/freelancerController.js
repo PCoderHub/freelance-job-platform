@@ -69,7 +69,11 @@ const getFreelancerJobs = asyncHandler(async (req, res) => {
     freelancer: { $ne: freelancerId },
   }).populate("client", "name email clientProfile");
 
-  const freelancerJobs = [...hiredJobs, ...appliedJobs];
+  //const freelancerJobs = [...hiredJobs, ...appliedJobs];
+  const freelancerJobs = {
+    hiredJobs,
+    appliedJobs,
+  };
 
   res.status(200).json(freelancerJobs);
 });

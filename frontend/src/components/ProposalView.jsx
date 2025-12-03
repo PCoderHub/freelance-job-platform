@@ -8,8 +8,10 @@ import {
   Rating,
   Paper,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 
-export default function ProposalView({ proposal }) {
+export default function ProposalView() {
+  const proposal = useSelector((state) => state.proposal.proposal);
   const freelancer = proposal.freelancer;
 
   return (

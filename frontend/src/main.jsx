@@ -16,6 +16,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import AllJobs from "./pages/AllJobs.jsx";
 import JobDetails from "./pages/JobDetails.jsx";
+import MyJobs from "./pages/MyJobs.jsx";
 
 const router = createBrowserRouter([
   {
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
           },
           {
             path: "my-jobs",
-            element: <></>,
+            element: <MyJobs />,
           },
           {
             path: "my-job-posts",

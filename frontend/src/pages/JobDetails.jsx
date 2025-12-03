@@ -23,12 +23,15 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Modal from "../components/Modal";
 import ProposalView from "../components/ProposalView";
+import { useDispatch } from "react-redux";
+import { setProposal } from "../features/proposal/proposalSlice";
 
 function JobDetails() {
   //const jobData = useSelector((state) => state.job.job);
   const { id } = useParams();
   const [job, setJob] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   //const user = JSON.parse(localStorage.getItem("user"));
@@ -51,7 +54,8 @@ function JobDetails() {
     getJobDetails(id);
   }, [id]);
 
-  const viewProposal = () => {
+  const viewProposal = (proposal) => {
+    dispatch(setProposal(proposal));
     setOpen(true);
   };
 
@@ -286,7 +290,7 @@ function JobDetails() {
                     variant="contained"
                     color="primary"
                     sx={{ mt: 2 }}
-                    onClick={viewProposal}
+                    onClick={() => viewProposal(proposal)}
                   >
                     View Proposal
                   </Button>
@@ -298,7 +302,7 @@ function JobDetails() {
                   </Button>
                 </Box>
                 <Modal open={open} onClose={() => setOpen(false)}>
-                  <ProposalView proposal={proposal} />
+                  <ProposalView />
                 </Modal>
               </ListItem>
             ))}

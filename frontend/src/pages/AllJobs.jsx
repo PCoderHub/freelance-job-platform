@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import JobCard from "../components/JobCard";
-import { getAllJobs } from "../services/jobServices";
+import { getAllJobsForFreelancer } from "../services/jobServices";
 import Masonry from "@mui/lab/Masonry";
 
 function AllJobs() {
@@ -9,7 +9,7 @@ function AllJobs() {
   useEffect(() => {
     const getJobs = async () => {
       try {
-        const response = await getAllJobs();
+        const response = await getAllJobsForFreelancer();
         setJobs([...response.data]);
         console.log(response.data);
       } catch (error) {
