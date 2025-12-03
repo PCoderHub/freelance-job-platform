@@ -8,7 +8,6 @@ const {
   applyToJob,
   getJobProposals,
   assignFreelancer,
-  getClientJobs,
   getFreelancerJobs,
 } = require("../controllers/jobController");
 const authMiddleware = require("../middleware/authMiddleware");
@@ -17,7 +16,6 @@ const router = express.Router();
 
 router.post("/", authMiddleware, validateRole("client"), createJob); //create job, client only
 router.get("/", getAllJobs); //get all jobs
-router.get("/client", authMiddleware, validateRole("client"), getClientJobs); //get all jobs for client
 router.get(
   "/freelancer",
   authMiddleware,

@@ -30,15 +30,6 @@ const getAllJobs = asyncHandler(async (req, res) => {
   res.status(200).json(jobs);
 });
 
-const getClientJobs = asyncHandler(async (req, res) => {
-  const jobs = await Job.find({ client: req.user.id }).populate(
-    "freelancer",
-    "name email profile freelancerProfile.skills"
-  );
-
-  res.status(200).json(jobs);
-});
-
 const getFreelancerJobs = asyncHandler(async (req, res) => {
   const jobs = await Job.find({ status: "open" }).populate(
     "client",
@@ -240,7 +231,6 @@ const assignFreelancer = asyncHandler(async (req, res) => {
 module.exports = {
   createJob,
   getAllJobs,
-  getClientJobs,
   getFreelancerJobs,
   getJobById,
   updateJob,

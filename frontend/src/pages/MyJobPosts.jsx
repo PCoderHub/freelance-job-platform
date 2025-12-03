@@ -3,7 +3,7 @@ import { IoMdAdd } from "react-icons/io";
 import JobPost from "../components/JobPost";
 import Modal from "../components/Modal";
 import JobPostForm from "../components/JobPostForm";
-import { getClientJobs } from "../services/jobServices";
+import { getClientJobs } from "../services/clientServices";
 import Masonry from "@mui/lab/Masonry";
 
 function MyJobPosts() {
