@@ -12,3 +12,6 @@ export const applyToJob = (id, application) =>
   api.post(`/job/${id}/apply`, application);
 
 export const getJobProposals = (id) => api.get(`/job/${id}/proposals`);
+
+export const offerToFreelancer = (id, proposalId) =>
+  api.put(`/job/${id}/offer`, { proposalId });

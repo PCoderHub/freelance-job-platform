@@ -1,8 +1,27 @@
-import { Card, CardContent, Typography, Chip, Stack } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Chip,
+  Stack,
+  Button,
+} from "@mui/material";
 
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setJob } from "../features/job/jobSlice";
+import Modal from "./Modal";
+import JobView from "./JobView";
 
-function JobItem({ job }) {
+function JobItem({ job, actions }) {
+  const [openModal, setOpenModal] = useState(false);
+  const dispatch = useDispatch();
+
+  const confirmJobView = () => {
+    dispatch(setJob(job));
+    setOpenModal(true);
+  };
+
   return (
     <Card
       elevation={2}
@@ -26,6 +45,28 @@ function JobItem({ job }) {
       <Typography variant="body2" color="text.secondary">
         Status: <b>{job.status}</b>
       </Typography>
+
+      {actions && (
+        <>
+          <Button
+            variant="contained"
+            size="small"
+            sx={{ mt: 1 }}
+            onClick={confirmJobView}
+          >
+            View
+          </Button>
+          <Modal open={openModal} onClose={() => setOpenModal(false)}>
+            <JobView job={job} />
+          </Modal>
+          <Button variant="contained" size="small" sx={{ mt: 1, ml: 1 }}>
+            Accept
+          </Button>
+          <Button variant="contained" size="small" sx={{ mt: 1, ml: 1 }}>
+            Decline
+          </Button>
+        </>
+      )}
     </Card>
   );
 }

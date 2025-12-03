@@ -87,6 +87,7 @@ function MyJobs() {
           >
             <Tab label="Applied Jobs" {...a11yProps(0)} />
             <Tab label="Offered Jobs" {...a11yProps(1)} />
+            <Tab label="Hired Jobs" {...a11yProps(2)} />
           </Tabs>
         </Box>
 
@@ -102,6 +103,17 @@ function MyJobs() {
         </CustomTabPanel>
 
         <CustomTabPanel value={value} index={1}>
+          {jobs?.offeredJobs?.length > 0 ? (
+            jobs?.offeredJobs?.map((job) => (
+              <JobItem key={job._id} job={job} actions={true} />
+            ))
+          ) : (
+            <p>No offered jobs</p>
+          )}
+          {/* Add your list component here */}
+        </CustomTabPanel>
+
+        <CustomTabPanel value={value} index={2}>
           {jobs?.hiredJobs?.length > 0 ? (
             jobs?.hiredJobs?.map((job) => <JobItem key={job._id} job={job} />)
           ) : (

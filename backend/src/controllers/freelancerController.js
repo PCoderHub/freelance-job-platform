@@ -69,10 +69,23 @@ const getFreelancerJobs = asyncHandler(async (req, res) => {
     freelancer: { $ne: freelancerId },
   }).populate("client", "name email clientProfile");
 
+  const offeredproposals = await Proposal.find({
+    freelancer: freelancerId,
+    status: "offered",
+  }).select("job");
+
+  const jobIdsOffered = offeredproposals.map((proposal) => proposal.job);
+
+  const offeredJobs = await Job.find({
+    _id: { $in: jobIdsOffered },
+    freelancer: { $ne: freelancerId },
+  }).populate("client", "name email clientProfile");
+
   //const freelancerJobs = [...hiredJobs, ...appliedJobs];
   const freelancerJobs = {
     hiredJobs,
     appliedJobs,
+    offeredJobs,
   };
 
   res.status(200).json(freelancerJobs);

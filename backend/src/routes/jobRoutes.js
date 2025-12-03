@@ -7,8 +7,9 @@ const {
   deleteJob,
   applyToJob,
   getJobProposals,
-  assignFreelancer,
+  //assignFreelancer,
   getFreelancerJobs,
+  offerToFreelancer,
 } = require("../controllers/jobController");
 const authMiddleware = require("../middleware/authMiddleware");
 const validateRole = require("../middleware/validateRole");
@@ -42,11 +43,18 @@ router.get(
   validateRole("client"),
   getJobProposals
 ); //get proposals for job by id, client only
+// router.put(
+//   "/:id/assign",
+//   authMiddleware,
+//   validateRole("client"),
+//   assignFreelancer
+// ); //assign freelancer to job by id, client only
+
 router.put(
-  "/:id/assign",
+  "/:id/offer",
   authMiddleware,
   validateRole("client"),
-  assignFreelancer
-); //assign freelancer to job by id, client only
+  offerToFreelancer
+);
 
 module.exports = router;

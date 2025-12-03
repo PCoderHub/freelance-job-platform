@@ -16,7 +16,7 @@ function JobPost({ job }) {
     <Card sx={{ width: "100%", borderRadius: 2, boxShadow: 3 }}>
       <CardHeader
         title={job?.title}
-        subheader={new Date(job?.updatedAt).toLocaleString("en-US", {
+        subheader={new Date(job?.createdAt).toLocaleString("en-US", {
           day: "numeric",
           month: "long",
           year: "numeric",

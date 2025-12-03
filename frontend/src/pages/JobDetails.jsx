@@ -14,7 +14,11 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import { getJobById, getJobProposals } from "../services/jobServices";
+import {
+  getJobById,
+  getJobProposals,
+  offerToFreelancer,
+} from "../services/jobServices";
 import { useNavigate, useParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import List from "@mui/material/List";
@@ -25,6 +29,7 @@ import Modal from "../components/Modal";
 import ProposalView from "../components/ProposalView";
 import { useDispatch } from "react-redux";
 import { setProposal } from "../features/proposal/proposalSlice";
+import { toast } from "react-toastify";
 
 function JobDetails() {
   //const jobData = useSelector((state) => state.job.job);
@@ -57,6 +62,15 @@ function JobDetails() {
   const viewProposal = (proposal) => {
     dispatch(setProposal(proposal));
     setOpen(true);
+  };
+
+  const offerJob = async (proposalId) => {
+    try {
+      const res = await offerToFreelancer(id, proposalId);
+      toast.success(res.data.message);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   if (loading) {
@@ -99,7 +113,7 @@ function JobDetails() {
               {job.title}
             </Typography>
           }
-          subheader={`Posted on ${new Date(job.updatedAt).toLocaleDateString(
+          subheader={`Posted on ${new Date(job.createdAt).toLocaleDateString(
             "en-US",
             { day: "numeric", month: "long", year: "numeric" }
           )}`}
@@ -294,11 +308,13 @@ function JobDetails() {
                   >
                     View Proposal
                   </Button>
-                  <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-                    Accept
-                  </Button>
-                  <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-                    Decline
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                    onClick={() => offerJob(proposal._id)}
+                  >
+                    Offer
                   </Button>
                 </Box>
                 <Modal open={open} onClose={() => setOpen(false)}>
