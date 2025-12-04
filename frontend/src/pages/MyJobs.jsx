@@ -1,7 +1,7 @@
 import { Box, Paper, Tab, Tabs, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getFreelancerJobs } from "../services/freelancerServices";
+import { getFreelancerProposals } from "../services/freelancerServices";
 import JobItem from "../components/JobItem";
 
 function CustomTabPanel(props) {
@@ -35,23 +35,40 @@ function a11yProps(index) {
 
 function MyJobs() {
   const [value, setValue] = useState(0);
-  const [jobs, setJobs] = useState({});
+  const [proposals, setProposals] = useState({});
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    const getAppliedJobs = async () => {
+    // const getAppliedJobs = async () => {
+    //   try {
+    //     const response = await getFreelancerJobs();
+    //     console.log(response.data);
+    //     setJobs(response.data);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // getAppliedJobs();
+    const getMyJobs = async () => {
       try {
-        const response = await getFreelancerJobs();
-        console.log(response.data);
-        setJobs(response.data);
+        const response = await getFreelancerProposals();
+        console.log(response);
+        setProposals(response.data);
       } catch (error) {
         console.log(error);
       }
     };
-    getAppliedJobs();
+    getMyJobs();
   }, []);
+
+  const offeredJobs =
+    proposals.length > 0 &&
+    proposals?.filter((proposal) => proposal.status === "offered");
+  const hiredJobs =
+    proposals.length > 0 &&
+    proposals?.filter((proposal) => proposal.status === "accepted");
 
   return (
     <Box
@@ -93,8 +110,14 @@ function MyJobs() {
 
         {/* Panel Content */}
         <CustomTabPanel value={value} index={0}>
-          {jobs?.appliedJobs?.length > 0 ? (
-            jobs?.appliedJobs?.map((job) => <JobItem key={job._id} job={job} />)
+          {proposals.length > 0 ? (
+            proposals.map((proposal) => (
+              <JobItem
+                key={proposal._id}
+                proposal={proposal}
+                job={proposal.job}
+              />
+            ))
           ) : (
             <p>No applied jobs</p>
           )}
@@ -103,10 +126,19 @@ function MyJobs() {
         </CustomTabPanel>
 
         <CustomTabPanel value={value} index={1}>
-          {jobs?.offeredJobs?.length > 0 ? (
-            jobs?.offeredJobs?.map((job) => (
-              <JobItem key={job._id} job={job} actions={true} />
-            ))
+          {proposals.length > 0 ? (
+            offeredJobs.length > 0 ? (
+              offeredJobs.map((proposal) => (
+                <JobItem
+                  key={proposal._id}
+                  proposal={proposal}
+                  job={proposal.job}
+                  actions
+                />
+              ))
+            ) : (
+              <p>No offered jobs</p>
+            )
           ) : (
             <p>No offered jobs</p>
           )}
@@ -114,10 +146,20 @@ function MyJobs() {
         </CustomTabPanel>
 
         <CustomTabPanel value={value} index={2}>
-          {jobs?.hiredJobs?.length > 0 ? (
-            jobs?.hiredJobs?.map((job) => <JobItem key={job._id} job={job} />)
+          {proposals.length > 0 ? (
+            hiredJobs.length > 0 ? (
+              hiredJobs.map((proposal) => (
+                <JobItem
+                  key={proposal._id}
+                  proposal={proposal}
+                  job={proposal.job}
+                />
+              ))
+            ) : (
+              <p>No hired jobs</p>
+            )
           ) : (
-            <p>No offered jobs</p>
+            <p>No hired jobs</p>
           )}
           {/* Add your list component here */}
         </CustomTabPanel>

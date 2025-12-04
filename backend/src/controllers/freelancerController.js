@@ -96,11 +96,69 @@ const getFreelancerProposals = asyncHandler(async (req, res) => {
 
   const proposals = await Proposal.find({ freelancer: freelancerId }).populate({
     path: "job",
-    select: "title budget status client",
+    select:
+      "title budget category duration description skillsRequired status client",
     populate: { path: "client", select: "name email clientProfile" },
   });
 
   res.status(200).json(proposals);
+});
+
+const acceptOffer = asyncHandler(async (req, res) => {
+  const proposal = await Proposal.findById(req.params.id);
+  if (!proposal) return res.status(404).json({ message: "Proposal not found" });
+
+  // Only the freelancer can accept
+  if (proposal.freelancer.toString() !== req.user.id) {
+    return res.status(403).json({ message: "Access denied" });
+  }
+
+  const job = await Job.findById(proposal.job);
+  if (!job) return res.status(404).json({ message: "Job not found" });
+
+  // Accept the offer
+  proposal.status = "accepted";
+  await proposal.save();
+
+  // Assign freelancer to the job
+  job.freelancer = proposal.freelancer;
+  job.status = "in-progress";
+  await job.save();
+
+  // Reject all other proposals for this job
+  await Proposal.updateMany(
+    { job: job._id, _id: { $ne: proposal._id } },
+    { $set: { status: "rejected" } }
+  );
+
+  return res.status(200).json({
+    message: "Offer accepted. Job is now in progress",
+    job,
+  });
+});
+
+const declineOffer = asyncHandler(async (req, res) => {
+  const proposal = await Proposal.findById(req.params.id);
+  if (!proposal) return res.status(404).json({ message: "Proposal not found" });
+
+  // Only freelancer can decline
+  if (proposal.freelancer.toString() !== req.user.id) {
+    return res.status(403).json({ message: "Access denied" });
+  }
+
+  const job = await Job.findById(proposal.job);
+  if (!job) return res.status(404).json({ message: "Job not found" });
+
+  proposal.status = "declined";
+  await proposal.save();
+
+  // If declined, job goes back to open since no one is offered anymore
+  job.status = "open";
+  await job.save();
+
+  return res.status(200).json({
+    message: "Offer declined. Job is still open",
+  });
 });
 
 module.exports = {
@@ -109,4 +167,6 @@ module.exports = {
   updateFreelancerProfile,
   getFreelancerJobs,
   getFreelancerProposals,
+  acceptOffer,
+  declineOffer,
 };

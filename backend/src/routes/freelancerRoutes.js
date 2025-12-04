@@ -5,6 +5,8 @@ const {
   updateFreelancerProfile,
   getFreelancerJobs,
   getFreelancerProposals,
+  acceptOffer,
+  declineOffer,
 } = require("../controllers/freelancerController");
 const authMiddleware = require("../middleware/authMiddleware");
 const validateRole = require("../middleware/validateRole");
@@ -35,5 +37,17 @@ router.get(
   getFreelancerProposals
 ); //get proposals submitted by freelancer
 router.get("/:id", getFreelancerById); //get freelancer by id
+router.put(
+  "/proposal/:id/accept",
+  authMiddleware,
+  validateRole("freelancer"),
+  acceptOffer
+);
+router.put(
+  "/proposal/:id/decline",
+  authMiddleware,
+  validateRole("freelancer"),
+  declineOffer
+);
 
 module.exports = router;

@@ -68,6 +68,9 @@ function JobDetails() {
     try {
       const res = await offerToFreelancer(id, proposalId);
       toast.success(res.data.message);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error) {
       console.error(error);
     }
@@ -296,6 +299,14 @@ function JobDetails() {
                       >
                         Bid Amount: ${proposal.bidAmount}
                       </Typography>
+
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        sx={{ mt: 1 }}
+                      >
+                        Proposal Status: {proposal.status}
+                      </Typography>
                     </>
                   }
                 />
@@ -308,14 +319,16 @@ function JobDetails() {
                   >
                     View Proposal
                   </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 2 }}
-                    onClick={() => offerJob(proposal._id)}
-                  >
-                    Offer
-                  </Button>
+                  {proposal.status === "pending" && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      sx={{ mt: 2 }}
+                      onClick={() => offerJob(proposal._id)}
+                    >
+                      Offer
+                    </Button>
+                  )}
                 </Box>
                 <Modal open={open} onClose={() => setOpen(false)}>
                   <ProposalView />
