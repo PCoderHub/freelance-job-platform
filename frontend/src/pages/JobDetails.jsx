@@ -15,9 +15,11 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import {
+  deleteJob,
   getJobById,
   getJobProposals,
   offerToFreelancer,
+  updateJob,
 } from "../services/jobServices";
 import { useNavigate, useParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -30,6 +32,10 @@ import ProposalView from "../components/ProposalView";
 import { useDispatch } from "react-redux";
 import { setProposal } from "../features/proposal/proposalSlice";
 import { toast } from "react-toastify";
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+
+const ITEM_HEIGHT = 48;
 
 function JobDetails() {
   //const jobData = useSelector((state) => state.job.job);
@@ -40,6 +46,56 @@ function JobDetails() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   //const user = JSON.parse(localStorage.getItem("user"));
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleCancelJob = async () => {
+    setAnchorEl(null);
+    try {
+      const response = await updateJob(job._id, { status: "cancelled" });
+      toast.success(response.data.message);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const handleMarkAsCompleted = async () => {
+    setAnchorEl(null);
+    try {
+      const response = await updateJob(job._id, { status: "completed" });
+      toast.success(response.data.message);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const handleDeleteJob = async () => {
+    setAnchorEl(null);
+    try {
+      const response = await deleteJob(job._id);
+      toast.success(response.data.message);
+      setTimeout(() => {
+        navigate(-1);
+      }, 2000);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
 
   useEffect(() => {
     const getJobDetails = async (id) => {
@@ -120,6 +176,43 @@ function JobDetails() {
             "en-US",
             { day: "numeric", month: "long", year: "numeric" }
           )}`}
+          action={
+            <div>
+              <IconButton onClick={handleMenu}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="long-menu"
+                anchorEl={anchorEl}
+                open={openMenu}
+                onClose={handleClose}
+                slotProps={{
+                  paper: {
+                    style: {
+                      maxHeight: ITEM_HEIGHT * 4.5,
+                      width: "20ch",
+                    },
+                  },
+                  list: {
+                    "aria-labelledby": "long-button",
+                  },
+                }}
+              >
+                <MenuItem key={"Cancel Job"} onClick={handleCancelJob}>
+                  Cancel Job
+                </MenuItem>
+                <MenuItem
+                  key={"Mark as Completed"}
+                  onClick={handleMarkAsCompleted}
+                >
+                  Mark as Completed
+                </MenuItem>
+                <MenuItem key={"Delete Job"} onClick={handleDeleteJob}>
+                  Delete Job
+                </MenuItem>
+              </Menu>
+            </div>
+          }
         />
 
         <Divider />
@@ -150,6 +243,7 @@ function JobDetails() {
               color="secondary"
               variant="outlined"
             />
+            <Chip label={job.status} color="warning" variant="outlined" />
           </Stack>
 
           {/* Description */}
