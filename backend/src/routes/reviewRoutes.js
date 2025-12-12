@@ -5,6 +5,7 @@ const {
   updateReview,
   deleteReview,
   getReviews,
+  getGivenReviews,
 } = require("../controllers/reviewController");
 const authMiddleware = require("../middleware/authMiddleware");
 const validateRole = require("../middleware/validateRole");
@@ -25,6 +26,7 @@ router.put(
 ); //update review, author only
 router.delete("/:id", authMiddleware, deleteReview); //delete review, author or admin
 router.get("/:id", authMiddleware, getReviews); //get all reviews for freelancer/client
+router.get("/given/:id", authMiddleware, getGivenReviews); //get all reviews for freelancer/client
 //router.get("/client/:id", authMiddleware);          //get all reviews for client
 //router.get("/freelancer/:id", authMiddleware);      //get all reviews for freelancer
 

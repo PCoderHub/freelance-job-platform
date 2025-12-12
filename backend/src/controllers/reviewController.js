@@ -75,7 +75,6 @@ const updateReview = asyncHandler(async (req, res) => {
     });
   }
 
-  review.reviewed = req.body.reviewed;
   review.rating = req.body.rating;
   review.comment = req.body.comment;
 
@@ -120,10 +119,21 @@ const getReviews = asyncHandler(async (req, res) => {
   res.status(200).json(reviews);
 });
 
+const getGivenReviews = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const reviews = await Review.find({ reviewer: id }).populate(
+    "job reviewed",
+    "title name profile"
+  );
+
+  res.status(200).json(reviews);
+});
+
 module.exports = {
   createReview,
   getAllReviews,
   updateReview,
   deleteReview,
   getReviews,
+  getGivenReviews,
 };

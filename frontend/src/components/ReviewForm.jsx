@@ -1,9 +1,9 @@
 import { Rating } from "@mui/material";
 import React, { useState } from "react";
 
-function ReviewForm({ onSubmit }) {
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
+function ReviewForm({ onSubmit, initialValues }) {
+  const [rating, setRating] = useState(initialValues?.rating || 0);
+  const [comment, setComment] = useState(initialValues?.comment || "");
 
   const handleSubmit = (e) => {
     e.preventDefault();
