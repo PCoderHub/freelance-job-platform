@@ -14,10 +14,13 @@ import Modal from "./Modal";
 import JobView from "./JobView";
 import { acceptOffer, declineOffer } from "../services/freelancerServices";
 import { toast } from "react-toastify";
+import ReviewForm from "./ReviewForm";
+import { createReview } from "../services/reviewServices";
 
 function JobItem({ proposal, job, actions }) {
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
+  const [openReviewModal, setOpenReviewModal] = useState(false);
 
   const confirmJobView = () => {
     dispatch(setJob(job));
@@ -43,6 +46,25 @@ function JobItem({ proposal, job, actions }) {
       setTimeout(() => {
         window.location.reload();
       }, 2000);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const handleReviewSubmit = async ({ rating, comment }) => {
+    try {
+      const review = {
+        jobId: job._id,
+        reviewedId: job.client._id,
+        rating,
+        comment,
+      };
+
+      const response = await createReview(review);
+      toast.success(response.data.message);
+      setTimeout(() => {
+        window.location.reload();
+      });
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -75,35 +97,57 @@ function JobItem({ proposal, job, actions }) {
       <Typography variant="body2" color="text.secondary">
         Application Status: <b>{proposal.status}</b>
       </Typography>
+      {job?.status === "completed" && (
+        <Typography variant="body2" color="text.secondary">
+          Job Status: <b>{job?.status}</b>
+        </Typography>
+      )}
 
       <Button
+        accessKey=""
         variant="contained"
         size="small"
         sx={{ mt: 1 }}
         onClick={confirmJobView}
       >
-        View Job
+        <span accessKey="">View Job</span>
       </Button>
+      {job?.status === "completed" && (
+        <Button
+          accessKey=""
+          variant="contained"
+          size="small"
+          sx={{ mt: 1, ml: 1 }}
+          onClick={() => setOpenReviewModal(true)}
+        >
+          <span accessKey="">Leave a review</span>
+        </Button>
+      )}
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <JobView job={job} />
+      </Modal>
+      <Modal open={openReviewModal} onClose={() => setOpenReviewModal(false)}>
+        <ReviewForm onSubmit={handleReviewSubmit} />
       </Modal>
       {actions && (
         <>
           <Button
+            accessKey=""
             variant="contained"
             size="small"
             sx={{ mt: 1, ml: 1 }}
             onClick={handleAcceptOffer}
           >
-            Accept
+            <span accessKey="">Accept</span>
           </Button>
           <Button
+            accessKey=""
             variant="contained"
             size="small"
             sx={{ mt: 1, ml: 1 }}
             onClick={handleDeclineOffer}
           >
-            Decline
+            <span accessKey="">Decline</span>
           </Button>
         </>
       )}

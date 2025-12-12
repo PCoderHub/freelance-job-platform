@@ -17,6 +17,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import AllJobs from "./pages/AllJobs.jsx";
 import JobDetails from "./pages/JobDetails.jsx";
 import MyJobs from "./pages/MyJobs.jsx";
+import ReviewsAndRatings from "./pages/ReviewsAndRatings.jsx";
 
 const router = createBrowserRouter([
   {
@@ -77,7 +78,7 @@ const router = createBrowserRouter([
           },
           {
             path: "reviews",
-            element: <></>,
+            element: <ReviewsAndRatings />,
           },
           {
             path: "jobs/:id",

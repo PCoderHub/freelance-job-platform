@@ -74,10 +74,11 @@ function ProposalForm({ jobId, onClose }) {
       </div>
 
       <button
+        accessKey=""
         type="submit"
         className="w-full bg-indigo-700 text-white font-medium py-2 rounded-md hover:bg-indigo-800 transition-colors"
       >
-        Submit Bid
+        <span accessKey="">Submit Bid</span>
       </button>
     </form>
   );

@@ -34,6 +34,8 @@ import { setProposal } from "../features/proposal/proposalSlice";
 import { toast } from "react-toastify";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ReviewForm from "../components/ReviewForm";
+import { createReview } from "../services/reviewServices";
 
 const ITEM_HEIGHT = 48;
 
@@ -46,6 +48,7 @@ function JobDetails() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   //const user = JSON.parse(localStorage.getItem("user"));
+  const [openReviewModal, setOpenReviewModal] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
@@ -132,6 +135,25 @@ function JobDetails() {
     }
   };
 
+  const handleReviewSubmit = async ({ rating, comment }) => {
+    try {
+      const review = {
+        jobId: job._id,
+        reviewedId: job.freelancer._id,
+        rating,
+        comment,
+      };
+
+      const response = await createReview(review);
+      toast.success(response.data.message);
+      setTimeout(() => {
+        window.location.reload();
+      });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   if (loading) {
     return (
       <Box
@@ -157,12 +179,13 @@ function JobDetails() {
       }}
     >
       <Button
+        accessKey=""
         variant="outlined"
         startIcon={<ArrowBackIcon />}
         onClick={() => navigate(-1)}
         sx={{ mb: 3 }}
       >
-        Go Back
+        <span accessKey="">Go Back</span>
       </Button>
       {/* MAIN JOB SECTION */}
       <Card elevation={4} sx={{ borderRadius: 3 }}>
@@ -178,7 +201,7 @@ function JobDetails() {
           )}`}
           action={
             <div>
-              <IconButton onClick={handleMenu}>
+              <IconButton accessKey="" onClick={handleMenu}>
                 <MoreVertIcon />
               </IconButton>
               <Menu
@@ -198,18 +221,44 @@ function JobDetails() {
                   },
                 }}
               >
-                <MenuItem key={"Cancel Job"} onClick={handleCancelJob}>
-                  Cancel Job
-                </MenuItem>
                 <MenuItem
-                  key={"Mark as Completed"}
-                  onClick={handleMarkAsCompleted}
+                  accessKey=""
+                  key={"Cancel Job"}
+                  onClick={handleCancelJob}
                 >
-                  Mark as Completed
+                  <span accessKey="">Cancel Job</span>
                 </MenuItem>
-                <MenuItem key={"Delete Job"} onClick={handleDeleteJob}>
-                  Delete Job
+                {job?.status !== "completed" && (
+                  <MenuItem
+                    accessKey=""
+                    key={"Mark as Completed"}
+                    onClick={handleMarkAsCompleted}
+                  >
+                    <span accessKey="">Mark as Completed</span>
+                  </MenuItem>
+                )}
+                <MenuItem
+                  accessKey=""
+                  key={"Delete Job"}
+                  onClick={handleDeleteJob}
+                >
+                  <span accessKey="">Delete Job</span>
                 </MenuItem>
+                {job?.status === "completed" && (
+                  <MenuItem
+                    accessKey=""
+                    key={"Leave a review"}
+                    onClick={() => setOpenReviewModal(true)}
+                  >
+                    <span accessKey="">Leave a review</span>
+                  </MenuItem>
+                )}
+                <Modal
+                  open={openReviewModal}
+                  onClose={() => setOpenReviewModal(false)}
+                >
+                  <ReviewForm onSubmit={handleReviewSubmit} />
+                </Modal>
               </Menu>
             </div>
           }
@@ -317,6 +366,7 @@ function JobDetails() {
             <Typography sx={{ mb: 0.5 }}>
               <strong>Website:</strong>{" "}
               <a
+                accessKey=""
                 href={job.client.clientProfile.companyWebsite}
                 target="_blank"
                 rel="noreferrer"
@@ -406,6 +456,7 @@ function JobDetails() {
                 />
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <Button
+                    accessKey=""
                     variant="contained"
                     color="primary"
                     sx={{ mt: 2 }}
@@ -415,6 +466,7 @@ function JobDetails() {
                   </Button>
                   {proposal.status === "pending" && (
                     <Button
+                      accessKey=""
                       variant="contained"
                       color="primary"
                       sx={{ mt: 2 }}

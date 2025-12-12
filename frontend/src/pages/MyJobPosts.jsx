@@ -27,11 +27,14 @@ function MyJobPosts() {
     <div className="relative p-5 mx-auto my-3 w-4/5">
       <div className="absolute right-5">
         <button
+          accessKey=""
           onClick={() => setOpen(true)}
           className="flex items-center gap-2 bg-indigo-600 text-white py-3 px-5 rounded-md shadow-md flex justify-around font-semibold"
         >
-          <IoMdAdd className="text-xl" />
-          Post a requirement
+          <span accessKey="">
+            <IoMdAdd className="text-xl" />
+            Post a requirement
+          </span>
         </button>
       </div>
       <Modal open={open} onClose={() => setOpen(false)}>

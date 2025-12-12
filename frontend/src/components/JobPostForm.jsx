@@ -40,6 +40,9 @@ function JobPostForm({ onClose }) {
       });
 
       onClose();
+      setTimeout(() => {
+        window.location.reload();
+      });
     } catch (error) {
       console.log(error);
     }
@@ -143,10 +146,11 @@ function JobPostForm({ onClose }) {
 
         {/* Submit */}
         <button
+          accessKey=""
           type="submit"
           className="w-full bg-indigo-600 text-white p-2 rounded-lg font-semibold hover:bg-indigo-700"
         >
-          Post Job
+          <span accessKey="">Post Job</span>
         </button>
       </form>
     </div>

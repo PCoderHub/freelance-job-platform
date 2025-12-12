@@ -205,14 +205,19 @@ function EditProfileForm({
 
       {/* ACTION BUTTONS */}
       <div className="flex justify-end gap-3 mt-6">
-        <button onClick={handleCancel} className="px-4 py-2 border rounded-lg">
-          Cancel
+        <button
+          accessKey=""
+          onClick={handleCancel}
+          className="px-4 py-2 border rounded-lg"
+        >
+          <span accessKey="">Cancel</span>
         </button>
         <button
+          accessKey=""
           onClick={handleSave}
           className="px-4 py-2 bg-indigo-600 text-white rounded-lg"
         >
-          Save Changes
+          <span accessKey="">Save Changes</span>
         </button>
       </div>
     </div>

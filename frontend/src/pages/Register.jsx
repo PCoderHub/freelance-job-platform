@@ -88,16 +88,21 @@ function Register() {
             required
           />
           <button
+            accessKey=""
             type="submit"
             className="bg-indigo-600 text-white p-2 rounded-full hover:scale-105 hover:cursor-pointer w-1/2 mx-auto"
           >
-            Register
+            <span accessKey="">Register</span>
           </button>
         </form>
         <p className="my-2">
           Already have an account?{" "}
-          <Link to={`/login`} className="text-indigo-500 underline">
-            Login
+          <Link
+            accessKey=""
+            to={`/login`}
+            className="text-indigo-500 underline"
+          >
+            <span accessKey="">Login</span>
           </Link>
         </p>
       </div>

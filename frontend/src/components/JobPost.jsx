@@ -12,6 +12,9 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { deleteJob, updateJob } from "../services/jobServices";
 import { toast } from "react-toastify";
+import Modal from "./Modal";
+import ReviewForm from "./ReviewForm";
+import { createReview } from "../services/reviewServices";
 
 const ITEM_HEIGHT = 48;
 
@@ -19,6 +22,7 @@ function JobPost({ job }) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [openReviewModal, setOpenReviewModal] = useState(false);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,6 +58,22 @@ function JobPost({ job }) {
     }
   };
 
+  const handleReviewSubmit = async ({ rating, comment }) => {
+    try {
+      const review = {
+        jobId: job._id,
+        reviewedId: job.freelancer._id,
+        rating,
+        comment,
+      };
+
+      const response = await createReview(review);
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   const handleDeleteJob = async () => {
     setAnchorEl(null);
     try {
@@ -78,7 +98,7 @@ function JobPost({ job }) {
         })}
         action={
           <div>
-            <IconButton onClick={handleMenu}>
+            <IconButton accessKey="" onClick={handleMenu}>
               <MoreVertIcon />
             </IconButton>
             <Menu
@@ -98,18 +118,44 @@ function JobPost({ job }) {
                 },
               }}
             >
-              <MenuItem key={"Cancel Job"} onClick={handleCancelJob}>
+              <MenuItem
+                accessKey=""
+                key={"Cancel Job"}
+                onClick={handleCancelJob}
+              >
                 Cancel Job
               </MenuItem>
+              {job?.status !== "completed" && (
+                <MenuItem
+                  accessKey=""
+                  key={"Mark as Completed"}
+                  onClick={handleMarkAsCompleted}
+                >
+                  Mark as Completed
+                </MenuItem>
+              )}
               <MenuItem
-                key={"Mark as Completed"}
-                onClick={handleMarkAsCompleted}
+                accessKey=""
+                key={"Delete Job"}
+                onClick={handleDeleteJob}
               >
-                Mark as Completed
-              </MenuItem>
-              <MenuItem key={"Delete Job"} onClick={handleDeleteJob}>
                 Delete Job
               </MenuItem>
+              {job?.status === "completed" && (
+                <MenuItem
+                  accessKey=""
+                  key={"Leave a Review"}
+                  onClick={() => setOpenReviewModal(true)}
+                >
+                  Leave a review
+                </MenuItem>
+              )}
+              <Modal
+                open={openReviewModal}
+                onClose={() => setOpenReviewModal(false)}
+              >
+                <ReviewForm onSubmit={handleReviewSubmit} />
+              </Modal>
             </Menu>
           </div>
         }
@@ -140,11 +186,12 @@ function JobPost({ job }) {
       </CardContent>
       <CardActions>
         <Button
+          accessKey=""
           variant="contained"
           size="small"
           onClick={() => navigate(`/home/client/jobs/${job?._id}`)}
         >
-          View Details
+          <span accessKey="">View Details</span>
         </Button>
       </CardActions>
     </Card>

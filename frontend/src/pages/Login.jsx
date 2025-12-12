@@ -79,16 +79,17 @@ function Login() {
             required
           />
           <button
+            accessKey=""
             type="submit"
             className="bg-indigo-600 text-white p-2 rounded-full hover:scale-105 hover:cursor-pointer w-1/2 mx-auto"
           >
-            Login
+            <span accessKey="">Login</span>
           </button>
         </form>
         <p className="my-2">
           Don't have an account?{" "}
-          <Link to={`/`} className="text-indigo-500 underline">
-            Join here
+          <Link accessKey="" to={`/`} className="text-indigo-500 underline">
+            <span accessKey="">Join here</span>
           </Link>
         </p>
       </div>

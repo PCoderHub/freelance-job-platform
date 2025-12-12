@@ -159,10 +159,11 @@ function Profile() {
         </h1>
 
         <button
+          accessKey=""
           onClick={() => setOpen(true)}
           className="px-5 py-2 bg-indigo-600 text-white rounded-lg"
         >
-          Edit Profile
+          <span accessKey="">Edit Profile</span>
         </button>
       </div>
 

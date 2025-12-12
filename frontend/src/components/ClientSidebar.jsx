@@ -25,29 +25,49 @@ function ClientSidebar() {
   return (
     <aside className="bg-white w-1/5 p-4 flex flex-col justify-between">
       <nav className="flex flex-col">
-        <NavLink to="/home/client" end className={linkClasses}>
-          Dashboard
+        <NavLink
+          accessKey=""
+          tabIndex={-1}
+          to="/home/client"
+          end
+          className={linkClasses}
+        >
+          <span accessKey="">Dashboard</span>
         </NavLink>
-        <NavLink to="/home/client/my-job-posts" className={linkClasses}>
-          My Jobs
+        <NavLink
+          accessKey=""
+          to="/home/client/my-job-posts"
+          className={linkClasses}
+        >
+          <span accessKey="">My Jobs</span>
         </NavLink>
-        <NavLink to="/home/client/payments" className={linkClasses}>
-          Payments
+        <NavLink
+          accessKey=""
+          to="/home/client/payments"
+          className={linkClasses}
+        >
+          <span accessKey="">Payments</span>
         </NavLink>
-        <NavLink to="/home/client/reviews" className={linkClasses}>
-          Reviews/Ratings
+        <NavLink accessKey="" to="/home/client/reviews" className={linkClasses}>
+          <span accessKey="">Reviews/Ratings</span>
         </NavLink>
       </nav>
       <div className="p-2 flex flex-col items-center gap-2">
-        <Link to="/home/client/profile" className="text-black font-bold">
-          Profile
+        <Link
+          accessKey=""
+          to="/home/client/profile"
+          className="text-black font-bold"
+        >
+          <span accessKey="">Profile</span>
         </Link>
         <button
+          accessKey=""
+          tabIndex={-1}
           type="button"
           onClick={handleLogout}
           className="text-black font-bold"
         >
-          Logout
+          <span accessKey="">Logout</span>
         </button>
       </div>
     </aside>

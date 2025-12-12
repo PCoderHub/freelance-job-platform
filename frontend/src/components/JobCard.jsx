@@ -57,7 +57,7 @@ function JobCard({ job }) {
         }
         action={
           <div>
-            <IconButton onClick={handleMenu}>
+            <IconButton accessKey="" onClick={handleMenu}>
               <MoreVertIcon />
             </IconButton>
             <Menu
@@ -77,8 +77,12 @@ function JobCard({ job }) {
                 },
               }}
             >
-              <MenuItem key={"Submit Proposal"} onClick={handleSubmitProposal}>
-                Submit Proposal
+              <MenuItem
+                accessKey=""
+                key={"Submit Proposal"}
+                onClick={handleSubmitProposal}
+              >
+                <span accessKey="">Submit Proposal</span>
               </MenuItem>
             </Menu>
           </div>
@@ -122,7 +126,12 @@ function JobCard({ job }) {
       </CardContent>
 
       <CardActions>
-        <Button variant="contained" size="small" onClick={handleJobDetails}>
+        <Button
+          accessKey=""
+          variant="contained"
+          size="small"
+          onClick={handleJobDetails}
+        >
           View Details
         </Button>
       </CardActions>
