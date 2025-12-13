@@ -31,11 +31,11 @@ function ReviewsAndRatings() {
   useEffect(() => {
     const getUserReviews = async () => {
       try {
-        const resReceived = await getReviews(user.id);
+        const resReceived = await getReviews(user?.id);
         console.log(resReceived.data);
         setReceived(resReceived.data);
 
-        const resGiven = await getGivenReviews(user.id);
+        const resGiven = await getGivenReviews(user?.id);
         console.log(resGiven.data);
         setGiven(resGiven.data);
       } catch (err) {

@@ -1,10 +1,27 @@
 const Job = require("../models/Job");
 const asyncHandler = require("../middleware/asyncHandler");
 const Proposal = require("../models/Proposal");
+const User = require("../models/User");
 
 const createJob = asyncHandler(async (req, res) => {
   const { title, description, skillsRequired, budget, duration, category } =
     req.body;
+
+  const user = await User.findById(req.user.id);
+  if (!user.isActive)
+    return res
+      .status(400)
+      .json({
+        message:
+          "Admin has deactivated your account. Please complete your profile and try again in 48 hours.",
+      });
+
+  const existingJob = await Job.findOne({ title });
+  if (existingJob) {
+    return res.status(400).json({
+      message: "Job with this title already exists",
+    });
+  }
 
   const job = await Job.create({
     client: req.user.id,
@@ -133,6 +150,14 @@ const applyToJob = asyncHandler(async (req, res) => {
   if (existingApplication) {
     return res.status(400).json({
       message: "You have already applied to this job",
+    });
+  }
+
+  const freelancer = await User.findById(req.user.id);
+  if (!freelancer.isActive) {
+    return res.status(400).json({
+      message:
+        "Admin has deactivated your account. Please complete your profile and try again in 48 hours.",
     });
   }
 

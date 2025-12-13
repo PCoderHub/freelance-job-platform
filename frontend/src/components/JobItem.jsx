@@ -5,6 +5,7 @@ import {
   Chip,
   Stack,
   Button,
+  Tooltip,
 } from "@mui/material";
 
 import React, { useState } from "react";
@@ -84,7 +85,7 @@ function JobItem({ proposal, job, actions }) {
       </Typography>
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-        {proposal.coverLetter}
+        <Tooltip title={proposal.coverLetter}>{proposal.coverLetter}</Tooltip>
       </Typography>
 
       {/* <Stack direction="row" spacing={1} sx={{ my: 1 }} flexWrap="wrap">
@@ -95,7 +96,14 @@ function JobItem({ proposal, job, actions }) {
       </Stack> */}
 
       <Typography variant="body2" color="text.secondary">
-        Application Status: <b>{proposal.status}</b>
+        Application Status:{" "}
+        <b
+          className={
+            proposal.status === "accepted" ? "text-green-500" : "text-red-500"
+          }
+        >
+          {proposal.status}
+        </b>
       </Typography>
       {job?.status === "completed" && (
         <Typography variant="body2" color="text.secondary">
@@ -112,7 +120,7 @@ function JobItem({ proposal, job, actions }) {
       >
         <span accessKey="">View Job</span>
       </Button>
-      {job?.status === "completed" && (
+      {job?.status === "completed" && proposal?.status === "accepted" && (
         <Button
           accessKey=""
           variant="contained"

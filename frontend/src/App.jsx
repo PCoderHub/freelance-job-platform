@@ -21,6 +21,7 @@ function App() {
 
   // Auto redirect from "/" → dashboard
   if (isAuthPage && user) {
+    if (user.role === "admin") return <Navigate to="/admin" replace />;
     return <Navigate to={`/home/${user.role}`} replace />;
   }
 

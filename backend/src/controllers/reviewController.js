@@ -53,7 +53,7 @@ const createReview = asyncHandler(async (req, res) => {
 const getAllReviews = asyncHandler(async (req, res) => {
   const reviews = await Review.find().populate(
     "job reviewer reviewed",
-    "name email profile"
+    "title name email profile"
   );
 
   res.status(200).json(reviews);

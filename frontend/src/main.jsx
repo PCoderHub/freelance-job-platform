@@ -18,6 +18,7 @@ import AllJobs from "./pages/AllJobs.jsx";
 import JobDetails from "./pages/JobDetails.jsx";
 import MyJobs from "./pages/MyJobs.jsx";
 import ReviewsAndRatings from "./pages/ReviewsAndRatings.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/admin",
+        element: <AdminDashboard />,
       },
       {
         path: "/home/:role",

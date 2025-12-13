@@ -39,7 +39,8 @@ function Login() {
         }, 2000);
       }
     } catch (error) {
-      toast.error(error.message || error.response.data.message);
+      console.error(error);
+      toast.error(error.response.data.message || error.message);
     }
   };
 
