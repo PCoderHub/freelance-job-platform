@@ -17,11 +17,13 @@ import { acceptOffer, declineOffer } from "../services/freelancerServices";
 import { toast } from "react-toastify";
 import ReviewForm from "./ReviewForm";
 import { createReview } from "../services/reviewServices";
+import ChatWindow from "./ChatWindow";
 
 function JobItem({ proposal, job, actions }) {
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
   const [openReviewModal, setOpenReviewModal] = useState(false);
+  const [openChat, setOpenChat] = useState(false);
 
   const confirmJobView = () => {
     dispatch(setJob(job));
@@ -131,6 +133,26 @@ function JobItem({ proposal, job, actions }) {
           <span accessKey="">Leave a review</span>
         </Button>
       )}
+      <Button
+        accessKey=""
+        variant="contained"
+        size="small"
+        sx={{ mt: 1, ml: 1 }}
+        disabled={
+          !["in-progress", "completed"].includes(job.status) ||
+          proposal.status !== "accepted"
+        }
+        onClick={() => setOpenChat(true)}
+      >
+        Open Chat
+      </Button>
+      <Modal open={openChat} onClose={() => setOpenChat(false)}>
+        <ChatWindow
+          jobId={job._id}
+          client={job.client}
+          freelancer={job.freelancer}
+        />
+      </Modal>
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <JobView job={job} />
       </Modal>

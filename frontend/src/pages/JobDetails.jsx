@@ -36,6 +36,7 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ReviewForm from "../components/ReviewForm";
 import { createReview } from "../services/reviewServices";
+import ChatWindow from "../components/ChatWindow";
 
 const ITEM_HEIGHT = 48;
 
@@ -49,6 +50,7 @@ function JobDetails() {
   const [open, setOpen] = useState(false);
   //const user = JSON.parse(localStorage.getItem("user"));
   const [openReviewModal, setOpenReviewModal] = useState(false);
+  const [openChat, setOpenChat] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
@@ -464,6 +466,25 @@ function JobDetails() {
                   >
                     View Proposal
                   </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={
+                      !["in-progress", "completed"].includes(job.status) ||
+                      proposal.status !== "accepted"
+                    }
+                    sx={{ mt: 2 }}
+                    onClick={() => setOpenChat(true)}
+                  >
+                    Open Chat
+                  </Button>
+                  <Modal open={openChat} onClose={() => setOpenChat(false)}>
+                    <ChatWindow
+                      jobId={job._id}
+                      client={job.client}
+                      freelancer={job.freelancer}
+                    />
+                  </Modal>
                   {proposal.status === "pending" && (
                     <Button
                       accessKey=""

@@ -2,6 +2,7 @@ const asyncHandler = require("../middleware/asyncHandler");
 const User = require("../models/User");
 const Job = require("../models/Job");
 const Proposal = require("../models/Proposal");
+const Chat = require("../models/Chat");
 
 const getAllFreelancers = asyncHandler(async (req, res) => {
   const freelancers = await User.find({ role: "freelancer" }).select(
@@ -130,6 +131,16 @@ const acceptOffer = asyncHandler(async (req, res) => {
     { job: job._id, _id: { $ne: proposal._id } },
     { $set: { status: "rejected" } }
   );
+
+  const chatExists = await Chat.findOne({ job: job._id });
+  if (!chatExists) {
+    await Chat.create({
+      job: job._id,
+      client: job.client,
+      freelancer: job.freelancer,
+      messages: [],
+    });
+  }
 
   return res.status(200).json({
     message: "Offer accepted. Job is now in progress",

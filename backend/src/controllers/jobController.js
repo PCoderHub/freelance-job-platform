@@ -9,12 +9,10 @@ const createJob = asyncHandler(async (req, res) => {
 
   const user = await User.findById(req.user.id);
   if (!user.isActive)
-    return res
-      .status(400)
-      .json({
-        message:
-          "Admin has deactivated your account. Please complete your profile and try again in 48 hours.",
-      });
+    return res.status(400).json({
+      message:
+        "Admin has deactivated your account. Please complete your profile and try again in 48 hours.",
+    });
 
   const existingJob = await Job.findOne({ title });
   if (existingJob) {
@@ -59,7 +57,7 @@ const getFreelancerJobs = asyncHandler(async (req, res) => {
 const getJobById = asyncHandler(async (req, res) => {
   const job = await Job.findById(req.params.id)
     .populate("client", "name email clientProfile")
-    .populate("freelancer", "freelancerProfile");
+    .populate("freelancer", "name email freelancerProfile");
 
   if (!job) {
     return res.status(404).json({

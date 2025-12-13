@@ -13,6 +13,10 @@ const jobRoutes = require("./routes/jobRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const imageRoutes = require("./routes/imageRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const chatRoutes = require("./routes/chatRoutes");
+const http = require("http");
+const { Server } = require("socket.io");
+const server = http.createServer(app);
 
 DBConnect();
 
@@ -32,9 +36,33 @@ app.use("/api/job", jobRoutes);
 app.use("/api/review", reviewRoutes);
 app.use("/api/upload", imageRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/chat", chatRoutes);
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    credentials: true,
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("Socket connected: ", socket.id);
+
+  socket.on("joinChat", (chatId) => {
+    socket.join(chatId);
+  });
+
+  socket.on("sendMessage", ({ chatId, text }) => {
+    socket.to(chatId).emit("receiveMessage", text);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Socket disconnected: ", socket.id);
+  });
+});
+
+server.listen(port, () => {
+  console.log(`Server and SocketIO listening on port ${port}`);
 });
