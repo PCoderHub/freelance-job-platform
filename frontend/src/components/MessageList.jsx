@@ -1,24 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useRef } from "react";
-//import { getChatsByJob } from "../services/chatServices";
 
 const MessageList = ({ messages }) => {
   const bottomRef = useRef(null);
   const user = JSON.parse(localStorage.getItem("user"));
-
-  //   useEffect(() => {
-  //     const fetchMessages = async () => {
-  //       try {
-  //         const res = await getChatsByJob(jobId);
-  //         console.log(res.data)
-  //         setMessages(res.data.messages || []);
-  //       } catch (err) {
-  //         console.error(err);
-  //       }
-  //     };
-
-  //     fetchMessages();
-  //   }, [jobId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -35,7 +20,9 @@ const MessageList = ({ messages }) => {
     >
       {messages.length > 0 &&
         messages.map((msg) => {
-          const isMe = msg.sender === user._id || msg.sender?._id === user._id;
+          if (!msg?.sender) return null;
+
+          const isMe = msg?.sender?._id?.toString() === user?.id?.toString();
 
           return (
             <Box
@@ -55,10 +42,13 @@ const MessageList = ({ messages }) => {
                   color: isMe ? "white" : "black",
                 }}
               >
-                <Typography variant="body2">
-                  {msg.sender?.name || user.name}:
-                </Typography>
                 <Typography variant="body2">{msg.text}</Typography>
+                <Typography
+                  variant="caption"
+                  sx={{ opacity: 0.6, display: "block", mt: 0.5 }}
+                >
+                  {new Date(msg.createdAt).toLocaleString()}
+                </Typography>
               </Box>
             </Box>
           );

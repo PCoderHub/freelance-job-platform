@@ -2,6 +2,7 @@ import { Box, IconButton, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
 import { sendMessage } from "../services/chatServices";
+import { socket } from "../services/socket";
 
 const MessageInput = ({ jobId, onMessageSend }) => {
   const [text, setText] = useState("");
@@ -12,6 +13,10 @@ const MessageInput = ({ jobId, onMessageSend }) => {
     try {
       const res = await sendMessage(jobId, text);
       onMessageSend(res.data);
+      socket.emit("sendMessage", {
+        jobId,
+        message: res.data,
+      });
       setText("");
     } catch (err) {
       console.error(err);

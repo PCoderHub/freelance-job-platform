@@ -50,12 +50,12 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("Socket connected: ", socket.id);
 
-  socket.on("joinChat", (chatId) => {
-    socket.join(chatId);
+  socket.on("joinChat", (jobId) => {
+    socket.join(jobId);
   });
 
-  socket.on("sendMessage", ({ chatId, text }) => {
-    socket.to(chatId).emit("receiveMessage", text);
+  socket.on("sendMessage", ({ jobId, text }) => {
+    socket.to(jobId).emit("receiveMessage", text);
   });
 
   socket.on("disconnect", () => {

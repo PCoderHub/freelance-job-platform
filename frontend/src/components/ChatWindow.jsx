@@ -5,6 +5,7 @@ import MessageInput from "./MessageInput";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getChatsByJob } from "../services/chatServices";
+import { socket } from "../services/socket";
 
 const ChatWindow = ({ jobId, client, freelancer }) => {
   const [messages, setMessages] = useState([]);
@@ -24,6 +25,20 @@ const ChatWindow = ({ jobId, client, freelancer }) => {
     fetchMessages();
   }, [jobId]);
 
+  useEffect(() => {
+    if (!jobId) return;
+
+    socket.emit("joinChat", jobId);
+
+    socket.on("receiveMessage", (message) => {
+      setMessages((prev) => [...prev, message]);
+    });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, [jobId]);
+
   return (
     <Box
       sx={{
@@ -33,7 +48,7 @@ const ChatWindow = ({ jobId, client, freelancer }) => {
       }}
     >
       <ChatHeader client={client} freelancer={freelancer} />
-      <MessageList jobId={jobId} messages={messages} />
+      <MessageList messages={messages} />
       <MessageInput
         jobId={jobId}
         onMessageSend={(msg) => setMessages((prev) => [...prev, msg])}
