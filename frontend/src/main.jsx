@@ -19,6 +19,7 @@ import JobDetails from "./pages/JobDetails.jsx";
 import MyJobs from "./pages/MyJobs.jsx";
 import ReviewsAndRatings from "./pages/ReviewsAndRatings.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
+import TransactionHistory from "./pages/TransactionHistory.jsx";
 
 const router = createBrowserRouter([
   {
@@ -79,7 +80,7 @@ const router = createBrowserRouter([
           },
           {
             path: "payments",
-            element: <></>,
+            element: <TransactionHistory />,
           },
           {
             path: "reviews",

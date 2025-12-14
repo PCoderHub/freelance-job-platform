@@ -90,13 +90,6 @@ function JobItem({ proposal, job, actions }) {
         <Tooltip title={proposal.coverLetter}>{proposal.coverLetter}</Tooltip>
       </Typography>
 
-      {/* <Stack direction="row" spacing={1} sx={{ my: 1 }} flexWrap="wrap">
-        <Chip label={`₹${job.budget}`} color="success" />
-        {job.skillsRequired?.map((skill, i) => (
-          <Chip key={i} label={skill} size="small" color="primary" />
-        ))}
-      </Stack> */}
-
       <Typography variant="body2" color="text.secondary">
         Application Status:{" "}
         <b

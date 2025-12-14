@@ -37,18 +37,18 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ReviewForm from "../components/ReviewForm";
 import { createReview } from "../services/reviewServices";
 import ChatWindow from "../components/ChatWindow";
+import StripePayment from "../components/StripePayment";
 
 const ITEM_HEIGHT = 48;
 
 function JobDetails() {
-  //const jobData = useSelector((state) => state.job.job);
   const { id } = useParams();
   const [job, setJob] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  //const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"));
   const [openReviewModal, setOpenReviewModal] = useState(false);
   const [openChat, setOpenChat] = useState(false);
 
@@ -326,6 +326,12 @@ function JobDetails() {
                 />
               ))}
             </Stack>
+
+            {job.status === "completed" && user?.role === "client" && (
+              <Box sx={{ mt: 3 }}>
+                <StripePayment job={job} />
+              </Box>
+            )}
           </Box>
         </CardContent>
       </Card>

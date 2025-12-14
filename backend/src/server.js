@@ -17,6 +17,7 @@ const chatRoutes = require("./routes/chatRoutes");
 const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
+const paymentRoutes = require("./routes/paymentRoutes");
 
 DBConnect();
 
@@ -37,6 +38,7 @@ app.use("/api/review", reviewRoutes);
 app.use("/api/upload", imageRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/payment", paymentRoutes);
 
 app.use(errorHandler);
 
