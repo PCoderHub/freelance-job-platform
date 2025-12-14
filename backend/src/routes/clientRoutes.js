@@ -5,11 +5,18 @@ const {
   updateClientProfile,
   getClientJobs,
   getClientHires,
+  getDashboardStats,
 } = require("../controllers/clientController");
 const authMiddleware = require("../middleware/authMiddleware");
 const validateRole = require("../middleware/validateRole");
 const router = express.Router();
 
+router.get(
+  "/dashboard-stats",
+  authMiddleware,
+  validateRole("client"),
+  getDashboardStats
+);
 router.get("/", authMiddleware, validateRole("admin"), getAllClients); //get all clients for admin
 router.put(
   "/update-profile",

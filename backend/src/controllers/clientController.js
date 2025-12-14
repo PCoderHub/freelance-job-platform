@@ -2,6 +2,74 @@ const asyncHandler = require("../middleware/asyncHandler");
 const Job = require("../models/Job");
 const User = require("../models/User");
 
+const Review = require("../models/Review");
+const Payment = require("../models/Payment");
+const Proposal = require("../models/Proposal");
+const { default: mongoose } = require("mongoose");
+
+const getAverageRating = async (userId) => {
+  const result = await Review.aggregate([
+    { $match: { reviewed: new mongoose.Types.ObjectId(userId) } },
+    {
+      $group: {
+        _id: "$reviewed",
+        avgRating: { $avg: "$rating" },
+        totalReviews: { $sum: 1 },
+      },
+    },
+  ]);
+
+  return result[0] || { avgRating: 0, totalReviews: 0 };
+};
+
+const getDashboardStats = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+
+  const activeJobs = await Job.countDocuments({
+    client: userId,
+    status: "in-progress",
+  });
+
+  const proposalsWaiting = await Proposal.countDocuments({
+    client: userId,
+    status: "pending",
+  });
+
+  const hires = await Job.countDocuments({
+    client: userId,
+    status: { $in: ["in-progress", "completed"] },
+  });
+
+  const payments = await Payment.aggregate([
+    {
+      $match: {
+        client: new mongoose.Types.ObjectId(userId),
+        status: "succeeded",
+      },
+    },
+    { $group: { _id: null, total: { $sum: "$amount" } } },
+  ]);
+
+  const recentJobs = await Job.find({ client: userId })
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .select("title status");
+
+  const rating = await getAverageRating(userId);
+
+  res.json({
+    stats: {
+      activeJobs,
+      proposalsWaiting,
+      hires,
+      paymentsThisMonth: payments[0]?.total || 0,
+      averageRating: rating.avgRating,
+      totalReviews: rating.totalReviews,
+    },
+    recentJobs,
+  });
+});
+
 const getAllClients = asyncHandler(async (req, res) => {
   const clients = await User.find({ role: "client" }).select("-password");
   res.status(200).json(clients);
@@ -81,6 +149,7 @@ const getClientHires = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
+  getDashboardStats,
   getAllClients,
   getClientById,
   updateClientProfile,

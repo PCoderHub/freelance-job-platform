@@ -7,11 +7,18 @@ const {
   getFreelancerProposals,
   acceptOffer,
   declineOffer,
+  getFDashboardStats,
 } = require("../controllers/freelancerController");
 const authMiddleware = require("../middleware/authMiddleware");
 const validateRole = require("../middleware/validateRole");
 const router = express.Router();
 
+router.get(
+  "/dashboard-stats",
+  authMiddleware,
+  validateRole("freelancer"),
+  getFDashboardStats
+);
 router.get(
   "/",
   authMiddleware,

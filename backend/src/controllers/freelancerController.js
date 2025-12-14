@@ -3,6 +3,66 @@ const User = require("../models/User");
 const Job = require("../models/Job");
 const Proposal = require("../models/Proposal");
 const Chat = require("../models/Chat");
+const { default: mongoose } = require("mongoose");
+const Payment = require("../models/Payment");
+const Review = require("../models/Review");
+
+const getAverageRating = async (userId) => {
+  const result = await Review.aggregate([
+    { $match: { reviewed: new mongoose.Types.ObjectId(userId) } },
+    {
+      $group: {
+        _id: "$reviewed",
+        avgRating: { $avg: "$rating" },
+        totalReviews: { $sum: 1 },
+      },
+    },
+  ]);
+
+  return result[0] || { avgRating: 0, totalReviews: 0 };
+};
+
+const getFDashboardStats = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+
+  const activeJobs = await Job.countDocuments({
+    freelancer: userId,
+    status: "in-progress",
+  });
+
+  const completedJobs = await Job.countDocuments({
+    freelancer: userId,
+    status: "completed",
+  });
+
+  const earnings = await Payment.aggregate([
+    {
+      $match: {
+        freelancer: new mongoose.Types.ObjectId(userId),
+        status: "succeeded",
+      },
+    },
+    { $group: { _id: null, total: { $sum: "$amount" } } },
+  ]);
+
+  const recentJobs = await Job.find({ freelancer: userId })
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .select("title status");
+
+  const rating = await getAverageRating(userId);
+
+  res.json({
+    stats: {
+      activeJobs,
+      completedJobs,
+      totalEarnings: earnings[0]?.total || 0,
+      averageRating: rating.avgRating,
+      totalReviews: rating.totalReviews,
+    },
+    recentJobs,
+  });
+});
 
 const getAllFreelancers = asyncHandler(async (req, res) => {
   const freelancers = await User.find({ role: "freelancer" }).select(
@@ -173,6 +233,7 @@ const declineOffer = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
+  getFDashboardStats,
   getAllFreelancers,
   getFreelancerById,
   updateFreelancerProfile,
