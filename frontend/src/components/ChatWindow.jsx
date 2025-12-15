@@ -32,6 +32,7 @@ const ChatWindow = ({ jobId, client, freelancer }) => {
 
     socket.on("receiveMessage", (message) => {
       setMessages((prev) => [...prev, message]);
+      console.log("RECEIVED:", message.text);
     });
 
     return () => {

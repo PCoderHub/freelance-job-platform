@@ -47,7 +47,9 @@ const MessageList = ({ messages }) => {
                   variant="caption"
                   sx={{ opacity: 0.6, display: "block", mt: 0.5 }}
                 >
-                  {new Date(msg.createdAt).toLocaleString()}
+                  {msg.createdAt
+                    ? new Date(msg.createdAt).toLocaleString()
+                    : "Sending..."}
                 </Typography>
               </Box>
             </Box>

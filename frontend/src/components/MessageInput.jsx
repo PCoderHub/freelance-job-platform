@@ -4,20 +4,33 @@ import { useState } from "react";
 import { sendMessage } from "../services/chatServices";
 import { socket } from "../services/socket";
 
-const MessageInput = ({ jobId, onMessageSend }) => {
+const MessageInput = ({ jobId }) => {
   const [text, setText] = useState("");
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const handleSend = async () => {
     if (!text.trim()) return;
 
+    const message = {
+      _id: Date.now(), // temp id
+      text,
+      sender: {
+        _id: user.id,
+        name: user.name,
+      },
+      createdAt: new Date().toISOString(),
+    };
+
+    socket.emit("sendMessage", {
+      jobId,
+      message,
+    });
+
+    setText("");
+
     try {
-      const res = await sendMessage(jobId, text);
-      onMessageSend(res.data);
-      socket.emit("sendMessage", {
-        jobId,
-        message: res.data,
-      });
-      setText("");
+      await sendMessage(jobId, text);
     } catch (err) {
       console.error(err);
     }

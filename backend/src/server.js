@@ -58,8 +58,8 @@ io.on("connection", (socket) => {
     socket.join(jobId);
   });
 
-  socket.on("sendMessage", ({ jobId, text }) => {
-    socket.to(jobId).emit("receiveMessage", text);
+  socket.on("sendMessage", ({ jobId, message }) => {
+    io.to(jobId).emit("receiveMessage", message);
   });
 
   socket.on("disconnect", () => {
