@@ -33,8 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const cookieOptions = {
     httpOnly: true,
     secure: true,
-    sameSite: "none",
-    path: "/",
+    sameSite: "none"
   };
 
   res.cookie("token", token, cookieOptions);
@@ -79,8 +78,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const cookieOptions = {
     httpOnly: true,
     secure: true,
-    sameSite: "none",
-    path: "/",
+    sameSite: "none"
   };
 
   res.cookie("token", token, cookieOptions);
@@ -100,8 +98,7 @@ const logoutUser = asyncHandler(async (req, res) => {
   const cookieOptions = {
     httpOnly: true,
     secure: true,
-    sameSite: "none",
-    path: "/",
+    sameSite: "none"
   };
   res.clearCookie("token", cookieOptions);
   res.json({
