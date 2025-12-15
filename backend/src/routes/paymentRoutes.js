@@ -3,7 +3,6 @@ const Job = require("../models/Job");
 const Payment = require("../models/Payment");
 const asyncHandler = require("../middleware/asyncHandler");
 const authMiddleware = require("../middleware/authMiddleware");
-const { payment } = require("../../../frontend/src/services/paymentServices");
 const router = express.Router();
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
