@@ -19,13 +19,15 @@ const { Server } = require("socket.io");
 const server = http.createServer(app);
 const paymentRoutes = require("./routes/paymentRoutes");
 
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
 DBConnect();
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: FRONTEND_URL,
     credentials: true,
   })
 );
@@ -44,7 +46,7 @@ app.use(errorHandler);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: FRONTEND_URL,
     credentials: true,
   },
 });
