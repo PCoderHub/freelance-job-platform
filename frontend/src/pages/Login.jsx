@@ -46,53 +46,55 @@ function Login() {
 
   return (
     <div className="w-3/5 mx-auto flex rounded-sm my-20 bg-white">
-      <div className="w-1/2 rounded-sm">
-        <img
-          src="https://images.unsplash.com/photo-1620344527458-28900b32d695?q=80&w=2062&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-          className="object-cover h-full rounded-sm"
-        />
-      </div>
-      <div className="w-1/2 text-center py-20">
-        <h2 className="font-bold text-3xl text-indigo-500 mb-5">Sign In</h2>
-        <form
-          onSubmit={handleLogin}
-          className="flex flex-col gap-5 w-2/3 mx-auto"
-        >
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Email"
-            className="border border-black rounded-full py-2 px-5"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+      <div className="w-full bg-white rounded-lg shadow-md flex flex-col lg:flex-row overflow-hidden">
+        <div className="w-full lg:w-1/2 rounded-sm">
+          <img
+            src="https://images.unsplash.com/photo-1620344527458-28900b32d695?q=80&w=2062&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt=""
+            className="object-cover h-full rounded-sm"
           />
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-            className="border border-black rounded-full py-2 px-5"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button
-            accessKey=""
-            type="submit"
-            className="bg-indigo-600 text-white p-2 rounded-full hover:scale-105 hover:cursor-pointer w-1/2 mx-auto"
+        </div>
+        <div className="w-full lg:w-1/2 text-center py-20">
+          <h2 className="font-bold text-3xl text-indigo-500 mb-5">Sign In</h2>
+          <form
+            onSubmit={handleLogin}
+            className="flex flex-col gap-5 w-2/3 mx-auto"
           >
-            <span accessKey="">Login</span>
-          </button>
-        </form>
-        <p className="my-2">
-          Don't have an account?{" "}
-          <Link accessKey="" to={`/`} className="text-indigo-500 underline">
-            <span accessKey="">Join here</span>
-          </Link>
-        </p>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email"
+              className="border border-black rounded-full py-2 px-5"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Password"
+              className="border border-black rounded-full py-2 px-5"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button
+              accessKey=""
+              type="submit"
+              className="bg-indigo-600 text-white p-2 rounded-full hover:scale-105 hover:cursor-pointer w-1/2 mx-auto"
+            >
+              <span accessKey="">Login</span>
+            </button>
+          </form>
+          <p className="my-2">
+            Don't have an account?{" "}
+            <Link accessKey="" to={`/`} className="text-indigo-500 underline">
+              <span accessKey="">Join here</span>
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

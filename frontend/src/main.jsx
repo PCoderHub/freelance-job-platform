@@ -20,6 +20,7 @@ import MyJobs from "./pages/MyJobs.jsx";
 import ReviewsAndRatings from "./pages/ReviewsAndRatings.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import TransactionHistory from "./pages/TransactionHistory.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -40,7 +41,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin",
-        element: <AdminDashboard />,
+        element: (
+          <AdminRoute>
+            {" "}
+            <AdminDashboard />
+          </AdminRoute>
+        ),
       },
       {
         path: "/home/:role",

@@ -24,6 +24,8 @@ import {
   Chip,
   Rating,
   Tooltip,
+  IconButton,
+  CircularProgress,
 } from "@mui/material";
 import { logoutUser } from "../services/userServices";
 import { toast } from "react-toastify";
@@ -37,8 +39,11 @@ import {
   getDashboardStats,
   updateUserStatus,
 } from "../services/adminServices";
+import MenuIcon from "@mui/icons-material/Menu";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { getTransactions } from "../services/paymentServices";
 
-const Sidebar = ({ selected, setSelected }) => {
+const Sidebar = ({ selected, setSelected, onClose }) => {
   const menu = ["Dashboard", "Users", "Jobs", "Payments", "Reviews"];
   const navigate = useNavigate();
 
@@ -55,32 +60,29 @@ const Sidebar = ({ selected, setSelected }) => {
   };
 
   return (
-    <aside className="bg-white w-1/5 p-4 min-h-screen p-4" tabIndex={-1}>
-      <nav className="flex flex-col justify-between h-full">
-        <List>
-          {menu.map((item) => (
-            <ListItem key={item} disablePadding>
-              <ListItemButton
-                selected={selected === item}
-                onClick={() => setSelected(item)}
-              >
-                <ListItemText primary={item} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+    <Box sx={{ height: "100%", width: 250 }}>
+      <List>
+        {menu.map((item) => (
+          <ListItem key={item} disablePadding>
+            <ListItemButton
+              selected={selected === item}
+              onClick={() => {
+                setSelected(item);
+                onClose?.();
+              }}
+            >
+              <ListItemText primary={item} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
 
-        <button
-          accessKey=""
-          tabIndex={-1}
-          type="button"
-          onClick={handleLogout}
-          className="text-black font-bold"
-        >
-          <span accessKey="">Logout</span>
-        </button>
-      </nav>
-    </aside>
+      <Box sx={{ p: 2 }}>
+        <Button fullWidth onClick={handleLogout} color="error">
+          Logout
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
@@ -114,14 +116,14 @@ const Jobs = () => {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 3 }}>
+    <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
       <Table>
         <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
           <TableRow>
             <TableCell>
               <b>Title</b>
             </TableCell>
-            <TableCell>
+            <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
               <b>Category</b>
             </TableCell>
             <TableCell>
@@ -136,13 +138,13 @@ const Jobs = () => {
             <TableCell>
               <b>Status</b>
             </TableCell>
-            <TableCell>
+            <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
               <b>Skills</b>
             </TableCell>
             <TableCell>
               <b>Proposals</b>
             </TableCell>
-            <TableCell>
+            <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
               <b>Created</b>
             </TableCell>
             <TableCell align="center">
@@ -158,7 +160,9 @@ const Jobs = () => {
               <TableCell>{job.title}</TableCell>
 
               {/* Category */}
-              <TableCell>{job.category}</TableCell>
+              <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                {job.category}
+              </TableCell>
 
               {/* Client */}
               <TableCell>
@@ -208,7 +212,7 @@ const Jobs = () => {
               </TableCell>
 
               {/* Skills */}
-              <TableCell>
+              <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
                 {job.skillsRequired?.map((skill, index) => (
                   <Chip
                     key={index}
@@ -223,7 +227,7 @@ const Jobs = () => {
               <TableCell>{job.proposals?.length || 0}</TableCell>
 
               {/* Created At */}
-              <TableCell>
+              <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
                 {new Date(job.createdAt).toLocaleDateString()}
               </TableCell>
 
@@ -334,7 +338,7 @@ const Users = () => {
   };
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
       <Table>
         <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
           <TableRow>
@@ -452,28 +456,72 @@ const Users = () => {
   );
 };
 
-const Payments = () => (
-  <TableContainer component={Paper}>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Freelancer</TableCell>
-          <TableCell>Amount</TableCell>
-          <TableCell>Date</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {[1, 2].map((p) => (
-          <TableRow key={p}>
-            <TableCell>Free {p}</TableCell>
-            <TableCell>$200</TableCell>
-            <TableCell>2025-01-01</TableCell>
+const Payments = () => {
+  const [payments, setPayments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const res = await getTransactions();
+        setPayments(res.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPayments();
+  }, []);
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (!payments.length) {
+    return <Typography color="text.secondary">No payments found</Typography>;
+  }
+  return (
+    <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <b>Client</b>
+            </TableCell>
+            <TableCell>
+              <b>Freelancer</b>
+            </TableCell>
+            <TableCell>
+              <b>Amount</b>
+            </TableCell>
+            <TableCell>
+              <b>Status</b>
+            </TableCell>
+            <TableCell>
+              <b>Date</b>
+            </TableCell>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-);
+        </TableHead>
+
+        <TableBody>
+          {payments.map((p) => (
+            <TableRow key={p._id} hover>
+              <TableCell>{p.client?.name}</TableCell>
+              <TableCell>{p.freelancer?.name}</TableCell>
+              <TableCell>£{(p.amount / 100).toFixed(2)}</TableCell>
+              <TableCell>{p.status}</TableCell>
+              <TableCell>
+                {new Date(p.createdAt).toLocaleDateString()}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -493,7 +541,7 @@ const Reviews = () => {
   }, []);
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 3 }}>
+    <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
       <Table>
         <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
           <TableRow>
@@ -588,6 +636,10 @@ const Reviews = () => {
 
 export default function AdminDashboard() {
   const [selected, setSelected] = useState("Dashboard");
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const isMobile = useMediaQuery("(max-width:900px)");
+  const drawerWidth = 240;
 
   const renderPage = () => {
     switch (selected) {
@@ -605,11 +657,48 @@ export default function AdminDashboard() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <Sidebar selected={selected} setSelected={setSelected} />
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+        height: "100%", // 🔑 key
+      }}
+    >
+      {/* Sidebar */}
+      <Drawer
+        variant={isMobile ? "temporary" : "permanent"}
+        open={!isMobile || mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        sx={{
+          "& .MuiDrawer-paper": {
+            position: "relative",
+            height: "100%",
+          },
+        }}
+      >
+        <Sidebar
+          selected={selected}
+          setSelected={setSelected}
+          onClose={() => setMobileOpen(false)}
+        />
+      </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
+      {/* Content */}
+      <Box
+        component="section"
+        sx={{
+          flexGrow: 1,
+          p: 2,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
+      >
+        {/* Mobile hamburger */}
+        {isMobile && (
+          <IconButton onClick={() => setMobileOpen(true)} sx={{ mb: 1 }}>
+            <MenuIcon />
+          </IconButton>
+        )}
+
         {renderPage()}
       </Box>
     </Box>

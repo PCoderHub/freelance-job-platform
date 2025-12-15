@@ -9,6 +9,10 @@ function ProtectedRoute({ children }) {
     return <Navigate to="/" replace />;
   }
 
+  if (user.role === "admin") {
+    return <Navigate to="/admin" replace />;
+  }
+
   if (role && user.role !== role) {
     return <Navigate to={`/home/${user.role || role}`} replace />;
   }

@@ -28,14 +28,14 @@ function Landing() {
           <span accessKey="">Let our freelancers help you</span>
         </h2>
       </button>
-      <section className="bg-indigo-300 text-center text-white rounded-sm flex justify-around items-center p-10">
-        <div className="bg-white text-black rounded-sm w-1/5 h-60 flex justify-center items-center">
+      <section className="bg-indigo-300 text-center text-white rounded-sm flex justify-around items-center p-6 sm:p-10">
+        <div className="bg-white text-black rounded-sm w-1/5 h-60 flex justify-center items-center text-xs md:text-md">
           Software Development
         </div>
-        <div className="bg-white text-black rounded-sm w-1/5 h-60 flex justify-center items-center">
+        <div className="bg-white text-black rounded-sm w-1/5 h-60 flex justify-center items-center text-xs md:text-md">
           Content Writing
         </div>
-        <div className="bg-white text-black rounded-sm w-1/5 h-60 flex justify-center items-center">
+        <div className="bg-white text-black rounded-sm w-1/5 h-60 flex justify-center items-center text-xs md:text-md">
           Data Entry
         </div>
       </section>

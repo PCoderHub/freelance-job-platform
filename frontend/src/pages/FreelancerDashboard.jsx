@@ -39,11 +39,7 @@ function FreelancerDashboard() {
   }, []);
 
   return (
-    <Box sx={{ p: 4 }}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
-        Freelancer Dashboard
-      </Typography>
-
+    <Box sx={{ p: 10 }}>
       {/* Stats */}
       <Grid container spacing={3}>
         <Grid item xs={12} md={3}>

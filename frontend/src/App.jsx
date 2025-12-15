@@ -18,10 +18,8 @@ function App() {
     document.addEventListener("keydown", stopAll, true);
     return () => document.removeEventListener("keydown", stopAll, true);
   }, []);
-
   // Auto redirect from "/" → dashboard
   if (isAuthPage && user) {
-    if (user.role === "admin") return <Navigate to="/admin" replace />;
     return <Navigate to={`/home/${user.role}`} replace />;
   }
 
