@@ -153,7 +153,7 @@ function Profile() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 mt-6">
-      <div className="flex justify-between items-center my-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 my-6">
         <h1 className="text-3xl font-bold text-indigo-700 text-center mx-auto">
           My Profile
         </h1>
@@ -161,13 +161,13 @@ function Profile() {
         <button
           accessKey=""
           onClick={() => setOpen(true)}
-          className="px-5 py-2 bg-indigo-600 text-white rounded-lg"
+          className="px-5 py-2 bg-indigo-600 text-white rounded-lg self-center sm:self-auto"
         >
           <span accessKey="">Edit Profile</span>
         </button>
       </div>
 
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col items-center">
         {/* CENTER - PROFILE PIC */}
         <div>
           <img
@@ -180,7 +180,7 @@ function Profile() {
           />
         </div>
 
-        <div className="flex mt-5">
+        <div className="flex flex-col sm:flex-row gap-4 mt-5">
           {/* LEFT - QUICK INFO */}
           <div className="bg-white border rounded-xl shadow p-6 m-1">
             <h2 className="text-xl font-semibold mb-4">Quick Info</h2>

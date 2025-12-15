@@ -10,12 +10,17 @@ import {
   Chip,
   Box,
   CircularProgress,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { getTransactions } from "../services/paymentServices";
 
 export default function TransactionHistory() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -32,7 +37,16 @@ export default function TransactionHistory() {
   }, []);
 
   return (
-    <Paper elevation={3} sx={{ p: 3, mx: "auto", my: 4, borderRadius: 3 }}>
+    <Paper
+      elevation={3}
+      sx={{
+        p: { xs: 2, sm: 3 },
+        mx: "auto",
+        my: 3,
+        borderRadius: 3,
+        width: "100%",
+      }}
+    >
       <Typography variant="h5" fontWeight="bold" gutterBottom>
         Transaction History
       </Typography>
@@ -46,64 +60,66 @@ export default function TransactionHistory() {
           No transactions found.
         </Typography>
       ) : (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <b>Job</b>
-              </TableCell>
-              <TableCell>
-                <b>Client</b>
-              </TableCell>
-              <TableCell>
-                <b>Freelancer</b>
-              </TableCell>
-              <TableCell>
-                <b>Amount</b>
-              </TableCell>
-              <TableCell>
-                <b>Status</b>
-              </TableCell>
-              <TableCell>
-                <b>Date</b>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {transactions.map((tx) => (
-              <TableRow key={tx._id} hover>
-                <TableCell>{tx.job?.title || "-"}</TableCell>
-                <TableCell>{tx.client?.name || "-"}</TableCell>
-                <TableCell>{tx.freelancer?.name || "-"}</TableCell>
-
-                <TableCell>Rs.{(tx.amount / 100).toFixed(2)}</TableCell>
-
+        <Box sx={{ overflowX: "auto" }}>
+          <Table size={isMobile ? "small" : "medium"}>
+            <TableHead>
+              <TableRow>
                 <TableCell>
-                  <Chip
-                    label={tx.status}
-                    size="small"
-                    color={
-                      tx.status === "paid"
-                        ? "success"
-                        : tx.status === "pending"
-                        ? "warning"
-                        : "default"
-                    }
-                  />
+                  <b>Job</b>
                 </TableCell>
-
                 <TableCell>
-                  {new Date(tx.createdAt).toLocaleDateString("en-GB", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
+                  <b>Client</b>
+                </TableCell>
+                <TableCell>
+                  <b>Freelancer</b>
+                </TableCell>
+                <TableCell>
+                  <b>Amount</b>
+                </TableCell>
+                <TableCell>
+                  <b>Status</b>
+                </TableCell>
+                <TableCell>
+                  <b>Date</b>
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+
+            <TableBody>
+              {transactions.map((tx) => (
+                <TableRow key={tx._id} hover>
+                  <TableCell>{tx.job?.title || "-"}</TableCell>
+                  <TableCell>{tx.client?.name || "-"}</TableCell>
+                  <TableCell>{tx.freelancer?.name || "-"}</TableCell>
+
+                  <TableCell>Rs.{(tx.amount / 100).toFixed(2)}</TableCell>
+
+                  <TableCell>
+                    <Chip
+                      label={tx.status}
+                      size="small"
+                      color={
+                        tx.status === "paid"
+                          ? "success"
+                          : tx.status === "pending"
+                          ? "warning"
+                          : "default"
+                      }
+                    />
+                  </TableCell>
+
+                  <TableCell>
+                    {new Date(tx.createdAt).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
       )}
     </Paper>
   );

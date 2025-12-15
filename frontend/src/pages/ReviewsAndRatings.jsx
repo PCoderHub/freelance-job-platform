@@ -7,6 +7,8 @@ import {
   IconButton,
   Rating,
   Grid,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
 import {
@@ -27,6 +29,9 @@ function ReviewsAndRatings() {
   const [given, setGiven] = useState([]);
   const [editReview, setEditReview] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const getUserReviews = async () => {
@@ -83,9 +88,19 @@ function ReviewsAndRatings() {
   const renderReview = (review, canEdit = false) => (
     <Box
       key={review._id}
-      className="bg-white shadow rounded-xl p-4 mb-4 flex justify-between items-start"
+      sx={{
+        backgroundColor: "white",
+        boxShadow: 2,
+        borderRadius: 3,
+        p: 2,
+        display: "flex",
+        flexDirection: isMobile ? "column" : "row",
+        justifyContent: "space-between",
+        gap: 2,
+        height: "100%",
+      }}
     >
-      <div>
+      <div className="flex-grow">
         <Typography variant="h6">
           {review.reviewer?.name || review.reviewed?.name}
         </Typography>
@@ -113,7 +128,13 @@ function ReviewsAndRatings() {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 px-4">
-      <Tabs value={tab} onChange={handleTabChange}>
+      <Tabs
+        value={tab}
+        onChange={handleTabChange}
+        variant="scrollable"
+        scrollButtons="auto"
+        allowScrollButtonsMobile
+      >
         <Tab label="Reviews Received" />
         <Tab label="Reviews Given" />
       </Tabs>
@@ -127,7 +148,7 @@ function ReviewsAndRatings() {
               columns={{ xs: 4, sm: 8, md: 12 }}
             >
               {received.map((r, index) => (
-                <Grid key={index} size={{ xs: 2, sm: 4, md: 6 }}>
+                <Grid key={index} size={{ xs: 12, sm: 6, md: 6 }}>
                   {renderReview(r)}
                 </Grid>
               ))}
@@ -143,7 +164,7 @@ function ReviewsAndRatings() {
               columns={{ xs: 4, sm: 8, md: 12 }}
             >
               {given.map((r, index) => (
-                <Grid key={index} size={{ xs: 2, sm: 4, md: 6 }}>
+                <Grid key={index} size={{ xs: 12, sm: 6, md: 6 }}>
                   {renderReview(r, true)}
                 </Grid>
               ))}

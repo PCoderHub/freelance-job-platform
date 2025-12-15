@@ -23,7 +23,7 @@ function FreelancerSidebar() {
 
   return (
     <aside
-      className="bg-white w-1/5 p-4 flex flex-col justify-between"
+      className="bg-white w-64 h-full p-4 flex flex-col justify-between"
       tabIndex={-1}
     >
       <nav className="flex flex-col">
