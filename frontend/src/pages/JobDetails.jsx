@@ -174,10 +174,11 @@ function JobDetails() {
   return (
     <Box
       sx={{
-        maxWidth: "900px",
+        maxWidth: "100%",
         mx: "auto",
-        mt: 5,
-        p: 3,
+        mt: { xs: 2, sm: 4 },
+        px: { xs: 1.5, sm: 3 },
+        pb: 6,
       }}
     >
       <Button

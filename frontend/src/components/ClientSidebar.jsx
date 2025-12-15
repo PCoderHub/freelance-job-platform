@@ -23,7 +23,7 @@ function ClientSidebar() {
   };
 
   return (
-    <aside className="bg-white w-1/5 p-4 flex flex-col justify-between">
+    <aside className="bg-white w-64 h-full p-4 flex flex-col justify-between">
       <nav className="flex flex-col">
         <NavLink
           accessKey=""
