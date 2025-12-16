@@ -96,7 +96,7 @@ function FreelancerDashboard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {stats?.recentJobs &&
+            {stats?.recentJobs?.length > 0 ? (
               stats?.recentJobs.map((job) => (
                 <TableRow key={job.id}>
                   <TableCell>{job.title}</TableCell>
@@ -108,7 +108,12 @@ function FreelancerDashboard() {
                     />
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+            ) : (
+              <Typography color="text.secondary">
+                No recent jobs found
+              </Typography>
+            )}
           </TableBody>
         </Table>
       </Paper>
