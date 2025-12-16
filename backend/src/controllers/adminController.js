@@ -3,16 +3,19 @@ const User = require("../models/User");
 const Job = require("../models/Job");
 const Review = require("../models/Review");
 const Proposal = require("../models/Proposal");
+const Payment = require("../models/Payment");
 
 const getDashboardStats = asyncHandler(async (req, res) => {
   const totalUsers = await User.countDocuments();
   const totalJobs = await Job.countDocuments();
   const totalReviews = await Review.countDocuments();
+  const totalPayments = await Payment.countDocuments();
 
   res.status(200).json({
     totalUsers,
     totalJobs,
     totalReviews,
+    totalPayments,
   });
 });
 

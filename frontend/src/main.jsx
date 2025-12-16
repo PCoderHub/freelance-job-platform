@@ -21,11 +21,16 @@ import ReviewsAndRatings from "./pages/ReviewsAndRatings.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import TransactionHistory from "./pages/TransactionHistory.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
+import TermsOfService from "./pages/TermsOfService.jsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -46,6 +51,18 @@ const router = createBrowserRouter([
             <AdminDashboard />
           </AdminRoute>
         ),
+      },
+      {
+        path: "/about-us",
+        element: <AboutUs />,
+      },
+      {
+        path: "/terms-of-service",
+        element: <TermsOfService />,
+      },
+      {
+        path: "/privacy-policy",
+        element: <PrivacyPolicy />,
       },
       {
         path: "/home/:role",
