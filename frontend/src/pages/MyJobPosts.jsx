@@ -48,10 +48,16 @@ function MyJobPosts() {
         <h2 className="my-15 font-bold text-2xl text-center text-indigo-700">
           My Job posts
         </h2>
-        <Masonry columns={columns} spacing={2}>
-          {clientJobs.length > 0 &&
-            clientJobs.map((job) => <JobPost key={job._id} job={job} />)}
-        </Masonry>
+        {clientJobs.length > 0 ? (
+          <Masonry columns={columns} spacing={2}>
+            {clientJobs.length > 0 &&
+              clientJobs.map((job) => <JobPost key={job._id} job={job} />)}
+          </Masonry>
+        ) : (
+          <div className="text-center text-gray-500 font-semibold text-lg">
+            No job posts yet
+          </div>
+        )}
       </div>
     </div>
   );

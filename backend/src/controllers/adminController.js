@@ -7,7 +7,7 @@ const Payment = require("../models/Payment");
 
 const getDashboardStats = asyncHandler(async (req, res) => {
   const totalUsers = await User.countDocuments();
-  const totalJobs = await Job.countDocuments();
+  const totalJobs = await Job.countDocuments({ status: { $ne: "deleted" } });
   const totalReviews = await Review.countDocuments();
   const totalPayments = await Payment.countDocuments();
 
@@ -70,7 +70,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 
 const getAllJobs = asyncHandler(async (req, res) => {
-  const jobs = await Job.find().populate(
+  const jobs = await Job.find({ status: { $ne: "deleted" } }).populate(
     "client freelancer",
     "name email profile"
   );
@@ -79,7 +79,7 @@ const getAllJobs = asyncHandler(async (req, res) => {
 });
 
 const deleteJob = asyncHandler(async (req, res) => {
-  const job = await Job.findByIdAndDelete(req.params.id);
+  const job = await Job.findById(req.params.id);
 
   if (!job) {
     return res.status(404).json({
@@ -87,7 +87,8 @@ const deleteJob = asyncHandler(async (req, res) => {
     });
   }
 
-  await Proposal.deleteMany({ job: req.params.id });
+  job.status = "deleted";
+  await job.save();
 
   res.status(200).json({
     message: "Job deleted successfully",

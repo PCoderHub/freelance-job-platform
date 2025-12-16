@@ -38,7 +38,7 @@ const createJob = asyncHandler(async (req, res) => {
 });
 
 const getAllJobs = asyncHandler(async (req, res) => {
-  const jobs = await Job.find().populate(
+  const jobs = await Job.find({ status: { $ne: "deleted" } }).populate(
     "client",
     "name email profile clientProfile"
   );

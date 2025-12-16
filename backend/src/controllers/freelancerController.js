@@ -45,7 +45,10 @@ const getFDashboardStats = asyncHandler(async (req, res) => {
     { $group: { _id: null, total: { $sum: "$amount" } } },
   ]);
 
-  const recentJobs = await Job.find({ freelancer: userId })
+  const recentJobs = await Job.find({
+    freelancer: userId,
+    status: { $ne: "deleted" },
+  })
     .sort({ createdAt: -1 })
     .limit(5)
     .select("title status");
@@ -114,10 +117,10 @@ const updateFreelancerProfile = asyncHandler(async (req, res) => {
 const getFreelancerJobs = asyncHandler(async (req, res) => {
   const freelancerId = req.user.id;
 
-  const hiredJobs = await Job.find({ freelancer: freelancerId }).populate(
-    "client",
-    "name email clientProfile"
-  );
+  const hiredJobs = await Job.find({
+    freelancer: freelancerId,
+    status: { $ne: "deleted" },
+  }).populate("client", "name email clientProfile");
 
   const proposals = await Proposal.find({ freelancer: freelancerId }).select(
     "job"
@@ -128,6 +131,7 @@ const getFreelancerJobs = asyncHandler(async (req, res) => {
   const appliedJobs = await Job.find({
     _id: { $in: jobIds },
     freelancer: { $ne: freelancerId },
+    status: { $ne: "deleted" },
   }).populate("client", "name email clientProfile");
 
   const offeredproposals = await Proposal.find({
@@ -140,6 +144,7 @@ const getFreelancerJobs = asyncHandler(async (req, res) => {
   const offeredJobs = await Job.find({
     _id: { $in: jobIdsOffered },
     freelancer: { $ne: freelancerId },
+    status: { $ne: "deleted" },
   }).populate("client", "name email clientProfile");
 
   //const freelancerJobs = [...hiredJobs, ...appliedJobs];

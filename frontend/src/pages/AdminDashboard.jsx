@@ -32,7 +32,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {
   deleteJob,
-  deleteUser,
   getAllJobs,
   getAllReviews,
   getAllUsers,
@@ -333,17 +332,6 @@ const Users = () => {
       toast.error(error.response.data.message);
     }
   };
-  const handleDelete = async (userId) => {
-    try {
-      const res = await deleteUser(userId);
-      toast.success(res.data.message);
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
 
   return (
     <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
@@ -444,15 +432,6 @@ const Users = () => {
                     onClick={() => handleStatusUpdate(user._id, user.isActive)}
                   >
                     {user.isActive ? "Deactivate" : "Activate"}
-                  </Button>
-
-                  <Button
-                    size="small"
-                    color="error"
-                    onClick={() => handleDelete(user._id)}
-                    style={{ marginLeft: 8 }}
-                  >
-                    Delete
                   </Button>
                 </TableCell>
               )}

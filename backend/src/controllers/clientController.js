@@ -50,7 +50,7 @@ const getDashboardStats = asyncHandler(async (req, res) => {
     { $group: { _id: null, total: { $sum: "$amount" } } },
   ]);
 
-  const recentJobs = await Job.find({ client: userId })
+  const recentJobs = await Job.find({ client: userId, status: { $ne: "deleted" } })
     .sort({ createdAt: -1 })
     .limit(5)
     .select("title status");
@@ -119,7 +119,7 @@ const updateClientProfile = asyncHandler(async (req, res) => {
 const getClientJobs = asyncHandler(async (req, res) => {
   const clientId = req.user.id;
 
-  const jobs = await Job.find({ client: clientId }).populate(
+  const jobs = await Job.find({ client: clientId, status: { $ne: "deleted" } }).populate(
     "freelancer",
     "name email profile freelancerProfile.skills"
   );
