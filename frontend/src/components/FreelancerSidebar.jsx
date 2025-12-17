@@ -3,7 +3,7 @@ import { logoutUser } from "../services/userServices";
 import { toast } from "react-toastify";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
-function FreelancerSidebar() {
+function FreelancerSidebar({ onClose }) {
   const navigate = useNavigate();
   const linkClasses = ({ isActive }) =>
     `rounded-lg transition-all p-3 m-1 text-2xl font-bold text-center 
@@ -33,6 +33,7 @@ function FreelancerSidebar() {
           to="/home/freelancer"
           end
           className={linkClasses}
+          onClick={onClose}
         >
           <span accessKey="">Dashboard</span>
         </NavLink>
@@ -40,6 +41,7 @@ function FreelancerSidebar() {
           accessKey=""
           className={linkClasses}
           to="/home/freelancer/browse-jobs"
+          onClick={onClose}
         >
           <span accessKey="">Browse Jobs</span>
         </NavLink>
@@ -47,6 +49,7 @@ function FreelancerSidebar() {
           accessKey=""
           to="/home/freelancer/my-jobs"
           className={linkClasses}
+          onClick={onClose}
         >
           <span accessKey="">My Jobs</span>
         </NavLink>
@@ -54,6 +57,7 @@ function FreelancerSidebar() {
           accessKey=""
           to="/home/freelancer/payments"
           className={linkClasses}
+          onClick={onClose}
         >
           <span accessKey="">Payments</span>
         </NavLink>
@@ -61,6 +65,7 @@ function FreelancerSidebar() {
           accessKey=""
           to="/home/freelancer/reviews"
           className={linkClasses}
+          onClick={onClose}
         >
           <span accessKey="">Reviews/Ratings</span>
         </NavLink>
@@ -70,6 +75,7 @@ function FreelancerSidebar() {
           accessKey=""
           to="/home/freelancer/profile"
           className="text-black font-bold"
+          onClick={onClose}
         >
           <span accessKey="">Profile</span>
         </Link>

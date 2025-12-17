@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { logoutUser } from "../services/userServices";
 import { toast } from "react-toastify";
 
-function ClientSidebar() {
+function ClientSidebar({ onClose }) {
   const navigate = useNavigate();
 
   const linkClasses = ({ isActive }) =>
@@ -31,6 +31,7 @@ function ClientSidebar() {
           to="/home/client"
           end
           className={linkClasses}
+          onClick={onClose}
         >
           <span accessKey="">Dashboard</span>
         </NavLink>
@@ -38,6 +39,7 @@ function ClientSidebar() {
           accessKey=""
           to="/home/client/my-job-posts"
           className={linkClasses}
+          onClick={onClose}
         >
           <span accessKey="">My Jobs</span>
         </NavLink>
@@ -45,10 +47,16 @@ function ClientSidebar() {
           accessKey=""
           to="/home/client/payments"
           className={linkClasses}
+          onClick={onClose}
         >
           <span accessKey="">Payments</span>
         </NavLink>
-        <NavLink accessKey="" to="/home/client/reviews" className={linkClasses}>
+        <NavLink
+          accessKey=""
+          to="/home/client/reviews"
+          className={linkClasses}
+          onClick={onClose}
+        >
           <span accessKey="">Reviews/Ratings</span>
         </NavLink>
       </nav>
@@ -57,6 +65,7 @@ function ClientSidebar() {
           accessKey=""
           to="/home/client/profile"
           className="text-black font-bold"
+          onClick={onClose}
         >
           <span accessKey="">Profile</span>
         </Link>

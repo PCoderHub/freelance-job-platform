@@ -30,7 +30,7 @@ function MyJobPosts() {
   }, []);
 
   return (
-    <div className="relative p-5 mx-auto my-3 w-4/5">
+    <div className="max-w-6xl mx-auto p-6 mt-6 overflow-y-auto">
       <div className="absolute right-5">
         <button
           accessKey=""

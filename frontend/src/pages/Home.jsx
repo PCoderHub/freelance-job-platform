@@ -36,8 +36,12 @@ function Home() {
         w-64 lg:relative lg:translate-x-0
         ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
-        {user?.role === "client" && <ClientSidebar />}
-        {user?.role === "freelancer" && <FreelancerSidebar />}
+        {user?.role === "client" && (
+          <ClientSidebar onClose={() => setOpen(false)} />
+        )}
+        {user?.role === "freelancer" && (
+          <FreelancerSidebar onClose={() => setOpen(false)} />
+        )}
       </div>
 
       {/* Main Content */}

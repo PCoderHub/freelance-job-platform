@@ -14,7 +14,7 @@ const createJob = asyncHandler(async (req, res) => {
         "Admin has deactivated your account. Please complete your profile and try again in 48 hours.",
     });
 
-  const existingJob = await Job.findOne({ title });
+  const existingJob = await Job.findOne({ title, status: { $ne: "deleted" } });
   if (existingJob) {
     return res.status(400).json({
       message: "Job with this title already exists",
@@ -117,7 +117,8 @@ const deleteJob = asyncHandler(async (req, res) => {
     });
   }
 
-  await job.deleteOne();
+  job.status = "deleted";
+  await job.save();
 
   res.status(200).json({
     message: "Job deleted successfully",

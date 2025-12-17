@@ -109,10 +109,12 @@ export default function TransactionHistory() {
                   </TableCell>
 
                   <TableCell>
-                    {new Date(tx.createdAt).toLocaleDateString("en-GB", {
+                    {new Date(tx.createdAt).toLocaleString("en-GB", {
                       day: "numeric",
                       month: "short",
                       year: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
                     })}
                   </TableCell>
                 </TableRow>
