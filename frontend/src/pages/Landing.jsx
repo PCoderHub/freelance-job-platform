@@ -15,7 +15,10 @@ function Landing() {
         onClick={() => handleRegister("freelancer")}
         className="bg-indigo-300 text-center mb-15 text-white rounded-sm w-full hover:scale-101 hover:cursor-pointer"
       >
-        <h2 accessKey="" className="text-2xl font-bold mb-4 p-30">
+        <h2
+          accessKey=""
+          className="text-sm md:text-2xl font-bold mb-4 p-10 md:p-30"
+        >
           <span accessKey="">Become a part of our freelance community</span>
         </h2>
       </button>
@@ -24,18 +27,21 @@ function Landing() {
         onClick={() => handleRegister("client")}
         className="bg-indigo-600 text-center mb-15 text-white rounded-sm w-full hover:scale-101 hover:cursor-pointer"
       >
-        <h2 accessKey="" className="text-2xl font-bold mb-4 p-30">
+        <h2
+          accessKey=""
+          className="text-sm md:text-2xl font-bold mb-4 p-10 md:p-30"
+        >
           <span accessKey="">Let our freelancers help you</span>
         </h2>
       </button>
-      <section className="bg-indigo-300 text-center text-white rounded-sm flex justify-around items-center p-6 sm:p-10">
-        <div className="bg-white text-black rounded-sm w-1/5 h-60 flex justify-center items-center text-xs md:text-md">
+      <section className="bg-indigo-300 text-center text-white rounded-sm flex flex-col md:flex-row justify-around items-center gap-2 p-6 sm:p-10">
+        <div className="bg-white text-black rounded-sm w-full md:w-1/5 h-full md:h-60 p-5 flex justify-center items-center text-xs md:text-md">
           Software Development
         </div>
-        <div className="bg-white text-black rounded-sm w-1/5 h-60 flex justify-center items-center text-xs md:text-md">
+        <div className="bg-white text-black rounded-sm w-full md:w-1/5 h-full md:h-60 p-5 flex justify-center items-center text-xs md:text-md">
           Content Writing
         </div>
-        <div className="bg-white text-black rounded-sm w-1/5 h-60 flex justify-center items-center text-xs md:text-md">
+        <div className="bg-white text-black rounded-sm w-full md:w-1/5 h-full md:h-60 p-5 flex justify-center items-center text-xs md:text-md">
           Data Entry
         </div>
       </section>
