@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="bg-indigo-700 text-white">
+    <footer className="bg-indigo-700 text-white flex flex-col justify-center items-center">
       <div className="flex flex-col justify-center items-center py-10">
         <Link to="/about-us" className="p-2 hover:scale-105 hover:underline">
           About Us
@@ -23,7 +23,7 @@ function Footer() {
           Privacy Policy
         </Link>
       </div>
-      <div className="flex justify-between items-center px-20 py-2">
+      <div className="flex justify-between items-center px-5 md:px-20 py-2 md:w-full">
         <p className="p-1 flex justify-center items-center gap-2 hover:scale-110">
           <FaSquareFacebook />
           Facebook
@@ -33,7 +33,7 @@ function Footer() {
           Instagram
         </p>
       </div>
-      <div>
+      <div className="md:self-start">
         <p className="p-1 text-sm">© 2025 Skillora. All rights reserved.</p>
       </div>
     </footer>

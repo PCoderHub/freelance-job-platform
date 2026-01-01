@@ -43,7 +43,7 @@ function Register() {
   };
 
   return (
-    <div className="w-3/5 mx-auto flex rounded-sm my-20 bg-white">
+    <div className="w-[90%] md:w-3/5 mx-auto flex rounded-sm my-20 bg-white">
       <div className="w-full bg-white rounded-lg shadow-md flex flex-col lg:flex-row overflow-hidden">
         <div className=" w-full lg:w-1/2 rounded-sm">
           <img
@@ -56,7 +56,7 @@ function Register() {
           <h2 className="font-bold text-3xl text-indigo-500 mb-5">Sign Up</h2>
           <form
             onSubmit={handleSignUp}
-            className="flex flex-col gap-5 w-2/3 mx-auto"
+            className="flex flex-col gap-5 w-3/4 md:w-2/3 mx-auto"
           >
             <input
               type="text"
