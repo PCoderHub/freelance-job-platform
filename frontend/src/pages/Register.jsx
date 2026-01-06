@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { registerUser } from "../services/userServices";
 import { toast } from "react-toastify";
@@ -11,6 +11,15 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const changeLoaded = () => {
+      setLoaded(true);
+    };
+
+    setTimeout(changeLoaded, 1000);
+  }, []);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -44,7 +53,12 @@ function Register() {
   };
 
   return (
-    <div className="w-[90%] md:w-3/5 mx-auto flex rounded-sm my-20 bg-white">
+    <div
+      className={`w-[90%] md:w-3/5 mx-auto flex rounded-sm my-20 bg-white
+    transition-all duration-1000 ease-out
+    ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
+  `}
+    >
       <div className="w-full bg-white rounded-lg shadow-md flex flex-col lg:flex-row overflow-hidden">
         <LeftImage />
         <div className="w-full lg:w-1/2 text-center py-20">
